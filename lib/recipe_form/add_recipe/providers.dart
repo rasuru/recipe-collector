@@ -6,7 +6,7 @@ import 'storage.dart';
 import 'use_case.dart';
 
 List<Provider> createAddRecipeProviders() {
-  final addRecipe$ = AddRecipe$();
+  final addRecipe$ = AddRecipeProgress$();
 
   return [
     Provider<AddRecipeController>(
@@ -17,7 +17,6 @@ List<Provider> createAddRecipeProviders() {
         ),
       ),
     ),
-    Provider<AddRecipe$>(create: (_) => addRecipe$),
-    Provider<RecipeName$>(create: (_) => RecipeName$()),
+    Provider<AddRecipeProgress$>(create: (_) => addRecipe$),
   ];
 }

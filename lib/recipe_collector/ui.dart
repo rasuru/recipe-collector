@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipe_collector/recipe_form/add_recipe/providers.dart';
-import 'package:recipe_collector/recipe_form/add_recipe/widgets/button.dart';
+import 'package:recipe_collector/recipe_form/providers.dart';
+import 'package:recipe_collector/recipe_form/widget.dart';
 import 'package:recipe_collector/ui/theme.dart';
 
 class RecipeCollectorUI extends StatelessWidget {
@@ -11,20 +11,25 @@ class RecipeCollectorUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: SafeArea(
-          child: MultiProvider(
-            providers: [
-              Provider<UITheme>(create: (_) => UITheme()),
-              ...createAddRecipeProviders(),
-            ],
-            child: Center(
-              child: AddRecipeButton(),
+    return MultiProvider(
+      providers: [
+        Provider<UITheme>(create: (_) => UITheme()),
+        ...createRecipeFormProviders(),
+      ],
+      builder: (context, _) {
+        return MaterialApp(
+          themeMode: ThemeMode.light,
+          theme: context.read<UITheme>().flutterTheme,
+          home: Scaffold(
+            body: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: RecipeForm(),
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

@@ -10,11 +10,17 @@ import 'package:recipe_collector/ui/theme.dart';
 import 'package:recipe_collector/widgets/success_message.dart';
 import 'package:time/time.dart';
 
+import '../../models/name.dart';
 import '../controller.dart';
 import '../model.dart';
 
 class AddRecipeButton extends StatefulWidget {
-  const AddRecipeButton({Key? key}) : super(key: key);
+  final bool Function() validate;
+
+  const AddRecipeButton({
+    Key? key,
+    required this.validate,
+  }) : super(key: key);
 
   @override
   _AddRecipeButtonState createState() => _AddRecipeButtonState();
@@ -23,49 +29,62 @@ class AddRecipeButton extends StatefulWidget {
 class _AddRecipeButtonState extends State<AddRecipeButton> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddRecipe$, Progress<void>>(
+    return BlocBuilder<AddRecipeProgress$, Progress<void>>(
       builder: (context, progress) {
         return ElevatedButton(
-          onPressed: _addRecipeHandler().nullifyIf(progress.isActive),
+          onPressed: () {
+            if (widget.validate()) {
+              _addRecipe();
+            }
+          }.nullifyIf(progress.isActive),
           child: Text('Add recipe'),
         );
       },
     );
   }
 
-  void Function() _addRecipeHandler() {
-    return () {
-      final addRecipe = context.read<AddRecipeController>();
-      final name = context.read<RecipeName$>().state;
+  void _addRecipe() {
+    final addRecipe = context.read<AddRecipeController>();
+    final name = context.read<RecipeName$>().state;
 
-      addRecipe(
-        name: name,
-      );
-    };
+    addRecipe(
+      name: name,
+    );
   }
 
+  late final FToast fToast;
   late final StreamSubscription _toastListener;
   @override
   void initState() {
     super.initState();
-    final fToast = FToast();
+    fToast = FToast();
     fToast.init(context);
-    _toastListener =
-        BlocProvider.of<AddRecipe$>(context).stream.listen((progress) {
-      if (progress.isCompleted) {
-        fToast.removeCustomToast();
-        fToast.showToast(
-          gravity: ToastGravity.BOTTOM,
-          toastDuration: 2.seconds,
-          child: MultiProvider(
-            providers: [
-              Provider.value(value: context.read<UITheme>()),
-            ],
-            child: SuccessMessage(message: 'Recipe added'),
-          ),
-        );
-      }
-    });
+    _toastListener = context
+        .read<AddRecipeProgress$>()
+        .stream
+        .listen(handleAddRecipeProgress);
+  }
+
+  void handleAddRecipeProgress(Progress progress) {
+    if (progress.isCompleted) {
+      fToast.removeCustomToast();
+      showSuccesssMessage();
+    }
+  }
+
+  void showSuccesssMessage() {
+    fToast.showToast(
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: 2.seconds,
+      child: MultiProvider(
+        providers: [
+          ProxyProvider0<UITheme>(
+            update: (context, _) => context.read<UITheme>(),
+          )
+        ],
+        child: SuccessMessage(message: 'Recipe added'),
+      ),
+    );
   }
 
   @override
