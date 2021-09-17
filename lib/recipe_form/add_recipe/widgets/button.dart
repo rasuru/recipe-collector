@@ -31,13 +31,14 @@ class _AddRecipeButtonState extends State<AddRecipeButton> {
   Widget build(BuildContext context) {
     return BlocBuilder<AddRecipeProgress$, Progress<void>>(
       builder: (context, progress) {
-        return ElevatedButton(
+        return ElevatedButton.icon(
           onPressed: () {
             if (widget.validate()) {
               _addRecipe();
             }
           }.nullifyIf(progress.isActive),
-          child: Text('Add recipe'),
+          icon: Icon(Icons.add),
+          label: Text('Add recipe'),
         );
       },
     );

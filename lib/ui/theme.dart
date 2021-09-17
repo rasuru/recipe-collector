@@ -14,7 +14,7 @@ class UITheme {
         right: 20,
       ),
       filled: true,
-      fillColor: Colors.grey.shade200,
+      fillColor: Colors.grey.shade100,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(40),
       ),
