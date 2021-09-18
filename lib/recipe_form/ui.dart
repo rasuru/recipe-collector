@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'add_recipe/providers.dart';
-import 'add_recipe/widgets/button.dart';
-import 'name_field/widget.dart';
+import 'add_recipe/ui.dart';
+import 'name_field/ui.dart';
 
 class RecipeForm extends StatefulWidget {
   const RecipeForm({Key? key}) : super(key: key);

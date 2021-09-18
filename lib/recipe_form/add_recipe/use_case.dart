@@ -6,7 +6,7 @@ class AddRecipeUseCase {
     required String id,
     required String name,
   }) store;
-  final void Function(Progress<AddRecipeUseCase>) present;
+  final void Function(Progress) present;
 
   AddRecipeUseCase({
     required this.store,
@@ -21,6 +21,6 @@ class AddRecipeUseCase {
       id: generateNewRecipeID(),
       name: name,
     );
-    present(Completed());
+    present(Completed(null));
   }
 }

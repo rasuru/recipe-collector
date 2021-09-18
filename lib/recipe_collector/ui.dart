@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_collector/recipe_form/providers.dart';
-import 'package:recipe_collector/recipe_form/widget.dart';
+import 'package:recipe_collector/recipe_form/ui.dart';
+import 'package:recipe_collector/recipe_list/providers.dart';
+import 'package:recipe_collector/recipe_list/ui.dart';
 import 'package:recipe_collector/ui/theme.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
@@ -27,7 +29,13 @@ class RecipeCollectorUI extends StatelessWidget {
               snappings: [40, 300, double.infinity],
               positioning: SnapPositioning.pixelOffset,
             ),
-            body: Container(),
+            body: Padding(
+              padding: EdgeInsets.only(bottom: 30),
+              child: MultiProvider(
+                providers: createRecipeListProviders(),
+                child: RecipeListView(),
+              ),
+            ),
             headerBuilder: buildBottomSheetHeader,
             builder: buildBottomSheet,
           ),

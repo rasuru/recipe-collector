@@ -1,6 +1,6 @@
 import 'package:provider/provider.dart';
 
-import 'models/name.dart';
+import 'state/name.dart';
 
 List<Provider> createRecipeFormProviders() {
   return [

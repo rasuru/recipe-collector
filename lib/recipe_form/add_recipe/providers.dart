@@ -1,22 +1,20 @@
 import 'package:provider/provider.dart';
 
 import 'controller.dart';
-import 'model.dart';
+import 'state.dart';
 import 'storage.dart';
 import 'use_case.dart';
 
 List<Provider> createAddRecipeProviders() {
-  final addRecipe$ = AddRecipeProgress$();
-
   return [
+    Provider<AddRecipeProgress$>(create: (_) => AddRecipeProgress$()),
     Provider<AddRecipeController>(
-      create: (_) => AddRecipeController(
+      create: (context) => AddRecipeController(
         AddRecipeUseCase(
-          present: addRecipe$,
+          present: context.read<AddRecipeProgress$>(),
           store: insertRecipe,
         ),
       ),
     ),
-    Provider<AddRecipeProgress$>(create: (_) => addRecipe$),
   ];
 }

@@ -1,35 +1,66 @@
 import 'package:equatable/equatable.dart';
 
-abstract class Progress<T> with EquatableMixin {
+abstract class Progress<Result> with EquatableMixin {
   final isIdle = false;
   final isActive = false;
   final isCompleted = false;
   final isFailed = false;
 
-  get props => [runtimeType, T];
+  get props => [runtimeType, Result];
 
-  Progress<A> cast<A>();
+  B fold<B>({
+    required B Function() ifIdle,
+    required B Function() ifActive,
+    required B Function(Result) ifCompleted,
+    required B Function(dynamic) ifFailed,
+  });
 }
 
-class Idle<T> extends Progress<T> {
+class Idle<Result> extends Progress<Result> {
   final isIdle = true;
 
-  Idle<A> cast<A>() => Idle();
+  @override
+  B fold<B>({
+    required B Function() ifIdle,
+    required B Function() ifActive,
+    required B Function(Result) ifCompleted,
+    required B Function(dynamic) ifFailed,
+  }) =>
+      ifIdle();
 }
 
-class Active<T> extends Progress<T> {
+class Active<Result> extends Progress<Result> {
   final isActive = true;
 
-  Active<A> cast<A>() => Active();
+  @override
+  B fold<B>({
+    required B Function() ifIdle,
+    required B Function() ifActive,
+    required B Function(Result) ifCompleted,
+    required B Function(dynamic) ifFailed,
+  }) =>
+      ifActive();
 }
 
-class Completed<T> extends Progress<T> {
+class Completed<Result> extends Progress<Result> {
   final isCompleted = true;
+  final Result result;
 
-  Completed<A> cast<A>() => Completed();
+  get props => [result, ...super.props];
+
+  Completed(this.result);
+
+  @override
+  B fold<B>({
+    required B Function() ifIdle,
+    required B Function() ifActive,
+    required B Function(Result) ifCompleted,
+    required B Function(dynamic) ifFailed,
+  }) =>
+      ifCompleted(result);
 }
 
-class Failed<T, Reason> extends Progress<T> {
+class Failed<Result, Reason> extends Progress<Result> {
   final isFailed = true;
   final Reason reason;
 
@@ -37,5 +68,12 @@ class Failed<T, Reason> extends Progress<T> {
 
   Failed(this.reason);
 
-  Failed<A, Reason> cast<A>() => Failed(reason);
+  @override
+  B fold<B>({
+    required B Function() ifIdle,
+    required B Function() ifActive,
+    required B Function(Result) ifCompleted,
+    required B Function(dynamic) ifFailed,
+  }) =>
+      ifFailed(reason);
 }

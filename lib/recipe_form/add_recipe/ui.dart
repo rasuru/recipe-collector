@@ -7,12 +7,12 @@ import 'package:provider/provider.dart';
 import 'package:recipe_collector/extensions/global.dart';
 import 'package:recipe_collector/progress.dart';
 import 'package:recipe_collector/ui/theme.dart';
-import 'package:recipe_collector/widgets/success_message.dart';
+import 'package:recipe_collector/ui/widgets/success_message.dart';
 import 'package:time/time.dart';
 
-import '../../models/name.dart';
-import '../controller.dart';
-import '../model.dart';
+import '../state/name.dart';
+import 'controller.dart';
+import 'state.dart';
 
 class AddRecipeButton extends StatefulWidget {
   final bool Function() validate;
@@ -29,7 +29,7 @@ class AddRecipeButton extends StatefulWidget {
 class _AddRecipeButtonState extends State<AddRecipeButton> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddRecipeProgress$, Progress<void>>(
+    return BlocBuilder<AddRecipeProgress$, Progress>(
       builder: (context, progress) {
         return ElevatedButton.icon(
           onPressed: () {
@@ -75,13 +75,11 @@ class _AddRecipeButtonState extends State<AddRecipeButton> {
 
   void showSuccesssMessage() {
     fToast.showToast(
-      gravity: ToastGravity.BOTTOM,
-      toastDuration: 2.seconds,
+      gravity: ToastGravity.CENTER,
+      toastDuration: 1.seconds,
       child: MultiProvider(
         providers: [
-          ProxyProvider0<UITheme>(
-            update: (context, _) => context.read<UITheme>(),
-          )
+          Provider.value(value: context.read<UITheme>()),
         ],
         child: SuccessMessage(message: 'Recipe added'),
       ),
