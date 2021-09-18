@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipe_collector/recipe_form/providers.dart';
-import 'package:recipe_collector/recipe_form/ui.dart';
-import 'package:recipe_collector/recipe_list/providers.dart';
-import 'package:recipe_collector/recipe_list/ui.dart';
-import 'package:recipe_collector/ui/theme.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
+
+import 'recipe_form/providers.dart';
+import 'recipe_form/ui.dart';
+import 'recipe_list/providers.dart';
+import 'recipe_list/ui.dart';
+import 'ui/theme.dart';
 
 class RecipeCollectorUI extends StatelessWidget {
   RecipeCollectorUI({
