@@ -1,9 +1,9 @@
 import 'package:provider/provider.dart';
 
-import 'state/name.dart';
+import 'name_field/state.dart';
 
 List<Provider> createRecipeFormProviders() {
   return [
-    Provider<RecipeName$>(create: (_) => RecipeName$()),
+    Provider<Name$>(create: (_) => Name$()),
   ];
 }

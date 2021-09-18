@@ -10,7 +10,7 @@ import 'package:recipe_collector/ui/theme.dart';
 import 'package:recipe_collector/ui/widgets/success_message.dart';
 import 'package:time/time.dart';
 
-import '../state/name.dart';
+import '../name_field/state.dart';
 import 'controller.dart';
 import 'state.dart';
 
@@ -46,10 +46,9 @@ class _AddRecipeButtonState extends State<AddRecipeButton> {
 
   void _addRecipe() {
     final addRecipe = context.read<AddRecipeController>();
-    final name = context.read<RecipeName$>().state;
 
     addRecipe(
-      name: name,
+      name: context.read<Name$>().state,
     );
   }
 

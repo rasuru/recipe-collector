@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_collector/recipe_form/reset_form/ui.dart';
 
 import 'add_recipe/providers.dart';
 import 'add_recipe/ui.dart';
@@ -21,30 +22,38 @@ class _RecipeFormState extends State<RecipeForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: MultiProvider(
-        providers: [
-          ...createAddRecipeProviders(),
-        ],
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              'New recipe',
-              style: _titleStyle,
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 20),
-            NameField(),
-            SizedBox(height: 20),
-            AddRecipeButton(
+    return wrapInForm([
+      Text(
+        'New recipe',
+        style: _titleStyle,
+        textAlign: TextAlign.center,
+      ),
+      SizedBox(height: 20),
+      NameField(),
+      SizedBox(height: 20),
+      Row(children: [
+        Expanded(child: ResetFormButton(formKey: _formKey)),
+        SizedBox(width: 20),
+        Expanded(
+          child: MultiProvider(
+            providers: createAddRecipeProviders(),
+            child: AddRecipeButton(
               validate: () {
                 return _formKey.currentState!.validate();
               },
             ),
-          ],
+          ),
         ),
+      ]),
+    ]);
+  }
+
+  Widget wrapInForm(List<Widget> children) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: children,
       ),
     );
   }
