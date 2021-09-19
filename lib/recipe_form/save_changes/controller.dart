@@ -1,9 +1,9 @@
 import 'use_case.dart';
 
-class SaveChangesController {
+class SaveChanges {
   final SaveChangesUseCase useCase;
 
-  SaveChangesController(this.useCase);
+  SaveChanges(this.useCase);
 
   void call({
     required String id,

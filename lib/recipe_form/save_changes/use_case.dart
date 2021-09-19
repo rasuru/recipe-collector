@@ -1,5 +1,4 @@
 import 'package:recipe_collector/progress.dart';
-import 'package:recipe_collector/recipe_form/open_form/use_case.dart';
 
 class SaveChangesUseCase {
   final Future<void> Function({
@@ -7,12 +6,10 @@ class SaveChangesUseCase {
     required String? name,
   }) update;
   final void Function(Progress) present;
-  final OpenRecipeFormUseCase openRecipeForm;
 
   SaveChangesUseCase({
     required this.update,
     required this.present,
-    required this.openRecipeForm,
   });
 
   Future<void> call({
@@ -25,6 +22,5 @@ class SaveChangesUseCase {
       name: name,
     );
     present(Completed(null));
-    openRecipeForm.emptyForm();
   }
 }

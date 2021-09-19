@@ -10,25 +10,26 @@ import 'package:recipe_collector/ui/theme.dart';
 import 'package:recipe_collector/ui/widgets/success_message.dart';
 import 'package:time/time.dart';
 
+import '../close_form.dart';
 import '../name_field/state.dart';
 import 'controller.dart';
 import 'state.dart';
 
-class EditRecipeButton extends StatefulWidget {
+class SaveChangesButton extends StatefulWidget {
   final bool Function() validate;
   final String recipeID;
 
-  const EditRecipeButton({
+  const SaveChangesButton({
     Key? key,
     required this.recipeID,
     required this.validate,
   }) : super(key: key);
 
   @override
-  _EditRecipeButtonState createState() => _EditRecipeButtonState();
+  _SaveChangesButtonState createState() => _SaveChangesButtonState();
 }
 
-class _EditRecipeButtonState extends State<EditRecipeButton> {
+class _SaveChangesButtonState extends State<SaveChangesButton> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SaveChangesProgress$, Progress>(
@@ -36,7 +37,8 @@ class _EditRecipeButtonState extends State<EditRecipeButton> {
         return ElevatedButton.icon(
           onPressed: () {
             if (widget.validate()) {
-              _editRecipe();
+              _saveChanges();
+              context.read<CloseRecipeForm>()();
             }
           }.nullifyIf(progress.isActive),
           icon: Icon(Icons.edit),
@@ -46,10 +48,8 @@ class _EditRecipeButtonState extends State<EditRecipeButton> {
     );
   }
 
-  void _editRecipe() {
-    final saveChanges = context.read<SaveChangesController>();
-
-    saveChanges(
+  void _saveChanges() {
+    context.read<SaveChanges>()(
       id: widget.recipeID,
       name: context.read<Name$>().state,
     );

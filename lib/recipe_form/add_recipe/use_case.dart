@@ -6,13 +6,11 @@ class AddRecipeUseCase {
     required String id,
     required String name,
   }) store;
-  final void Function() emptyForm;
   final void Function(Progress) present;
 
   AddRecipeUseCase({
     required this.store,
     required this.present,
-    required this.emptyForm,
   });
 
   Future<void> call({
@@ -24,6 +22,5 @@ class AddRecipeUseCase {
       name: name,
     );
     present(Completed(null));
-    emptyForm();
   }
 }

@@ -6,10 +6,12 @@ import 'package:recipe_collector/delete_recipe/state.dart';
 
 import 'add_recipe/providers.dart';
 import 'add_recipe/ui.dart';
+import 'close_form.dart';
 import 'domain.dart';
 import 'name_field/ui.dart';
 import 'open_form/use_case.dart';
-import 'reset_form/ui.dart';
+import 'reset_form.dart';
+import 'save_changes/providers.dart';
 import 'save_changes/ui.dart';
 
 class RecipeForm extends StatefulWidget {
@@ -20,7 +22,6 @@ class RecipeForm extends StatefulWidget {
 }
 
 class _RecipeFormState extends State<RecipeForm> {
-  final _formKey = GlobalKey<FormState>();
   final _titleStyle = TextStyle(
     fontSize: 28,
     color: Colors.grey.shade700,
@@ -40,13 +41,7 @@ class _RecipeFormState extends State<RecipeForm> {
         ),
       NameField(),
       SizedBox(height: 20),
-      Row(children: [
-        Expanded(child: ResetFormButton(formKey: _formKey)),
-        SizedBox(width: 20),
-        Expanded(
-          child: buildSumbitButton(context),
-        ),
-      ]),
+      buildButtons(),
     ]);
   }
 
@@ -76,7 +71,7 @@ class _RecipeFormState extends State<RecipeForm> {
 
   Widget wrapInForm(List<Widget> children) {
     return Form(
-      key: _formKey,
+      key: Provider.of<GlobalKey<FormState>>(context),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: children,
@@ -84,31 +79,70 @@ class _RecipeFormState extends State<RecipeForm> {
     );
   }
 
-  Widget buildSumbitButton(BuildContext context) {
+  Widget buildButtons() {
     final editedRecipe = context.watch<EditedRecipe>();
 
     return editedRecipe.maybeID.fold(
-      () {
-        return MultiProvider(
+      buildAddRecipeModeButtons,
+      buildEditRecipeModeButtons,
+    );
+  }
+
+  Widget buildAddRecipeModeButtons() {
+    return Row(children: [
+      Expanded(
+        child: OutlinedButton(
+          onPressed: context.read<ResetRecipeForm>(),
+          child: Text('Reset'),
+        ),
+      ),
+      SizedBox(width: 20),
+      Expanded(
+        child: MultiProvider(
           providers: createAddRecipeProviders(),
           child: AddRecipeButton(
-            validate: () {
-              return _formKey.currentState!.validate();
-            },
+            validate: validate,
           ),
-        );
-      },
-      (recipeID) {
-        return MultiProvider(
-          providers: createAddRecipeProviders(),
-          child: EditRecipeButton(
+        ),
+      ),
+    ]);
+  }
+
+  Widget buildEditRecipeModeButtons(recipeID) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        MultiProvider(
+          providers: createSaveChangesProviders(),
+          child: SaveChangesButton(
             recipeID: recipeID,
-            validate: () {
-              return _formKey.currentState!.validate();
-            },
+            validate: validate,
           ),
-        );
-      },
+        ),
+        SizedBox(height: 20),
+        Row(children: [
+          Expanded(
+            child: OutlinedButton(
+              onPressed: context.read<CloseRecipeForm>(),
+              child: Text('Cancel'),
+            ),
+          ),
+          SizedBox(width: 20),
+          Expanded(
+            child: OutlinedButton(
+              onPressed: () => context.read<ResetRecipeForm>()(),
+              child: Text('Reset'),
+            ),
+          ),
+        ])
+      ],
     );
+  }
+
+  bool validate() {
+    final formKey = context.read<GlobalKey<FormState>>();
+
+    return formKey.currentState!.validate();
   }
 }

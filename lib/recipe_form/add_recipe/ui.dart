@@ -10,6 +10,7 @@ import 'package:recipe_collector/ui/theme.dart';
 import 'package:recipe_collector/ui/widgets/success_message.dart';
 import 'package:time/time.dart';
 
+import '../close_form.dart';
 import '../name_field/state.dart';
 import 'controller.dart';
 import 'state.dart';
@@ -35,6 +36,7 @@ class _AddRecipeButtonState extends State<AddRecipeButton> {
           onPressed: () {
             if (widget.validate()) {
               _addRecipe();
+              context.read<CloseRecipeForm>()();
             }
           }.nullifyIf(progress.isActive),
           icon: Icon(Icons.add),

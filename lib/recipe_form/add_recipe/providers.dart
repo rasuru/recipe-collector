@@ -1,5 +1,4 @@
 import 'package:provider/provider.dart';
-import 'package:recipe_collector/recipe_form/open_form/use_case.dart';
 
 import 'controller.dart';
 import 'state.dart';
@@ -14,7 +13,6 @@ List<Provider> createAddRecipeProviders() {
         AddRecipeUseCase(
           present: context.read<AddRecipeProgress$>(),
           store: insertRecipe,
-          emptyForm: context.read<OpenRecipeFormUseCase>().emptyForm,
         ),
       ),
     ),

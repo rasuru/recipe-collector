@@ -85,6 +85,7 @@ class _RecipeCollectorUIState extends State<RecipeCollectorUI> {
 
   Widget wrapWithBottomsheet(Widget child) {
     return SlidingSheet(
+      controller: context.watch<SheetController>(),
       elevation: 8,
       shadowColor: Colors.black12,
       cornerRadius: 16,
