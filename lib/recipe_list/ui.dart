@@ -72,16 +72,16 @@ class RecipeListTile extends StatelessWidget {
   List<Widget> buildActions(BuildContext context) {
     return [
       ListTile(
-        title: Text('Delete'),
+        title: Text('Edit'),
         onTap: () {
-          context.read<DeleteRecipeUseCase>()(recipe.id);
+          context.read<OpenRecipeFormUseCase>()(recipe.id);
           Navigator.of(context).pop();
         },
       ),
       ListTile(
-        title: Text('Edit'),
+        title: Text('Delete'),
         onTap: () {
-          context.read<OpenRecipeFormUseCase>()(recipe.id);
+          context.read<DeleteRecipeUseCase>()(recipe.id);
           Navigator.of(context).pop();
         },
       ),
