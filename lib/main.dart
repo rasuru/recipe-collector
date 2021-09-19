@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'database.dart';
+import 'providers.dart';
 import 'ui.dart';
-import 'ui/theme.dart';
 
 void main() async {
   await setupDatabase();
-  runApp(Provider<UITheme>(
-    create: (_) => UITheme(),
+  runApp(MultiProvider(
+    providers: createGlobalProviders(),
     child: RecipeCollectorUI(),
   ));
 }

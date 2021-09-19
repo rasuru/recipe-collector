@@ -1,16 +1,17 @@
 import 'package:recipe_collector/database.dart';
 import 'package:sqlbrite/sqlbrite.dart';
 
-Future<void> insertRecipe({
+Future<void> updateRecipe({
   required String id,
-  required String name,
+  required String? name,
 }) async {
-  await db.insert(
+  await db.update(
     RecipeTable.name,
     {
-      RecipeTable.columns.id: id,
-      RecipeTable.columns.name: name,
+      if (name != null) RecipeTable.columns.name: name,
     },
+    where: 'id = ?',
+    whereArgs: [id],
     conflictAlgorithm: ConflictAlgorithm.rollback,
   );
 }

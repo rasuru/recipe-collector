@@ -14,40 +14,43 @@ import '../name_field/state.dart';
 import 'controller.dart';
 import 'state.dart';
 
-class AddRecipeButton extends StatefulWidget {
+class EditRecipeButton extends StatefulWidget {
   final bool Function() validate;
+  final String recipeID;
 
-  const AddRecipeButton({
+  const EditRecipeButton({
     Key? key,
+    required this.recipeID,
     required this.validate,
   }) : super(key: key);
 
   @override
-  _AddRecipeButtonState createState() => _AddRecipeButtonState();
+  _EditRecipeButtonState createState() => _EditRecipeButtonState();
 }
 
-class _AddRecipeButtonState extends State<AddRecipeButton> {
+class _EditRecipeButtonState extends State<EditRecipeButton> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddRecipeProgress$, Progress>(
+    return BlocBuilder<SaveChangesProgress$, Progress>(
       builder: (context, progress) {
         return ElevatedButton.icon(
           onPressed: () {
             if (widget.validate()) {
-              _addRecipe();
+              _editRecipe();
             }
           }.nullifyIf(progress.isActive),
-          icon: Icon(Icons.add),
-          label: Text('Add recipe'),
+          icon: Icon(Icons.edit),
+          label: Text('Save'),
         );
       },
     );
   }
 
-  void _addRecipe() {
-    final addRecipe = context.read<AddRecipeController>();
+  void _editRecipe() {
+    final saveChanges = context.read<SaveChangesController>();
 
-    addRecipe(
+    saveChanges(
+      id: widget.recipeID,
       name: context.read<Name$>().state,
     );
   }
@@ -60,12 +63,12 @@ class _AddRecipeButtonState extends State<AddRecipeButton> {
     fToast = FToast();
     fToast.init(context);
     _toastListener = context
-        .read<AddRecipeProgress$>()
+        .read<SaveChangesProgress$>()
         .stream
-        .listen(handleAddRecipeProgress);
+        .listen(handleEditRecipeProgress);
   }
 
-  void handleAddRecipeProgress(Progress progress) {
+  void handleEditRecipeProgress(Progress progress) {
     if (progress.isCompleted) {
       fToast.removeCustomToast();
       showSuccesssMessage();
@@ -80,7 +83,7 @@ class _AddRecipeButtonState extends State<AddRecipeButton> {
         providers: [
           Provider.value(value: context.read<UITheme>()),
         ],
-        child: SuccessMessage(message: 'Recipe added'),
+        child: SuccessMessage(message: 'Changes are saved'),
       ),
     );
   }

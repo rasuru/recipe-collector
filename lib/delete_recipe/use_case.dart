@@ -2,7 +2,10 @@ import 'package:recipe_collector/progress.dart';
 
 class DeleteRecipeUseCase {
   final Future<void> Function(String) deleteRecipe;
-  final void Function(Progress) present;
+  final void Function({
+    required String id,
+    required Progress progress,
+  }) present;
 
   DeleteRecipeUseCase({
     required this.deleteRecipe,
@@ -10,8 +13,8 @@ class DeleteRecipeUseCase {
   });
 
   Future<void> call(String id) async {
-    present(Active());
+    present(id: id, progress: Active());
     await deleteRecipe(id);
-    present(Completed(null));
+    present(id: id, progress: Completed(null));
   }
 }

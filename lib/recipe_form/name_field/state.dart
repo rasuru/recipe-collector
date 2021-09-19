@@ -1,7 +1,12 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 
-class Name$ extends Cubit<String> {
-  Name$() : super('');
+class Name$ {
+  final TextEditingController textEditingController;
 
-  void call(String name) => emit(name);
+  Name$({
+    required this.textEditingController,
+  });
+
+  String get state => textEditingController.text;
+  void call(String name) => textEditingController.text = name;
 }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:recipe_collector/delete_recipe/providers.dart';
 import 'package:recipe_collector/delete_recipe/use_case.dart';
 import 'package:recipe_collector/progress.dart';
-import 'controller.dart';
+import 'package:recipe_collector/recipe_form/open_form/use_case.dart';
 
+import 'controller.dart';
 import 'domain.dart';
 import 'state.dart';
 
@@ -62,25 +62,27 @@ class RecipeListTile extends StatelessWidget {
         return Dialog(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: buildActions(),
+            children: buildActions(context),
           ),
         );
       },
     );
   }
 
-  List<Widget> buildActions() {
+  List<Widget> buildActions(BuildContext context) {
     return [
-      MultiProvider(
-        providers: createDeleteRecipeProviders(),
-        builder: (context, _) {
-          return ListTile(
-            title: Text('Delete'),
-            onTap: () {
-              context.read<DeleteRecipeUseCase>()(recipe.id);
-              Navigator.of(context).pop();
-            },
-          );
+      ListTile(
+        title: Text('Delete'),
+        onTap: () {
+          context.read<DeleteRecipeUseCase>()(recipe.id);
+          Navigator.of(context).pop();
+        },
+      ),
+      ListTile(
+        title: Text('Edit'),
+        onTap: () {
+          context.read<OpenRecipeFormUseCase>()(recipe.id);
+          Navigator.of(context).pop();
         },
       ),
     ];

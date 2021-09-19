@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class Progress<Result> with EquatableMixin {
@@ -7,6 +8,12 @@ abstract class Progress<Result> with EquatableMixin {
   final isFailed = false;
 
   get props => [runtimeType, Result];
+
+  Option<Result> get maybeResult {
+    final progress = this;
+
+    return progress is Completed<Result> ? Some(progress.result) : None();
+  }
 
   B fold<B>({
     required B Function() ifIdle,

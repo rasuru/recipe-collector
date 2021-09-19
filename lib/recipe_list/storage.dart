@@ -1,6 +1,6 @@
+import 'package:recipe_collector/database.dart';
 import 'package:recipe_collector/extensions/sqlbrite.dart';
 
-import '../../database.dart';
 import 'domain.dart';
 
 Stream<Future<List<Recipe>>> queryRecipes() {
