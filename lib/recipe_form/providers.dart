@@ -7,6 +7,7 @@ import 'domain.dart';
 import 'name_field/state.dart';
 import 'open_form/use_case.dart';
 import 'reset_form.dart';
+import 'state/ingredient_field_list.dart';
 
 List<Provider> createRecipeFormProviders({
   required BuildContext context,
@@ -33,6 +34,9 @@ List<Provider> createRecipeFormProviders({
           text: editedRecipe.name,
         ),
       ),
+    ),
+    Provider<IngredientFieldList$>(
+      create: (_) => IngredientFieldList$(),
     ),
   ];
 }

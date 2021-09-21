@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_collector/delete_recipe/state.dart';
 
@@ -8,11 +9,14 @@ import 'add_recipe/providers.dart';
 import 'add_recipe/ui.dart';
 import 'close_form.dart';
 import 'domain.dart';
+import 'ingredient_field/state.dart';
+import 'ingredient_field/ui.dart';
 import 'name_field/ui.dart';
 import 'open_form/use_case.dart';
 import 'reset_form.dart';
 import 'save_changes/providers.dart';
 import 'save_changes/ui.dart';
+import 'state/ingredient_field_list.dart';
 
 class RecipeForm extends StatefulWidget {
   const RecipeForm({Key? key}) : super(key: key);
@@ -40,6 +44,8 @@ class _RecipeFormState extends State<RecipeForm> {
           ),
         ),
       NameField(),
+      SizedBox(height: 20),
+      buildIngredientFields(),
       SizedBox(height: 20),
       buildButtons(),
     ]);
@@ -76,6 +82,30 @@ class _RecipeFormState extends State<RecipeForm> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: children,
       ),
+    );
+  }
+
+  Widget buildIngredientFields() {
+    return BlocBuilder<IngredientFieldList$, List<IngredientField$>>(
+      builder: (_, list) {
+        return Column(
+          children: [
+            for (int i = 0; i < list.length; i++)
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: MultiProvider(
+                  providers: [
+                    Provider<IngredientNumber>(
+                      create: (_) => IngredientNumber.index(i),
+                    ),
+                    Provider<IngredientField$>(create: (_) => list[i]),
+                  ],
+                  child: IngredientField(),
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 
