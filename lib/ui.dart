@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_collector/ui/padding.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 import 'package:time/time.dart';
 
@@ -35,7 +36,7 @@ class _RecipeCollectorUIState extends State<RecipeCollectorUI> {
       themeMode: ThemeMode.light,
       theme: context.read<UITheme>().flutterTheme,
       home: buildScaffold(Padding(
-        padding: EdgeInsets.only(bottom: 30),
+        padding: paddingOf(bottom: 30),
         child: MultiProvider(
           providers: createRecipeListProviders(),
           child: RecipeListView(),
@@ -78,12 +79,12 @@ class _RecipeCollectorUIState extends State<RecipeCollectorUI> {
   Widget buildScaffold(Widget child) {
     return Scaffold(
       body: SafeArea(
-        child: wrapWithBottomsheet(child),
+        child: wrapWithBottomSheet(child),
       ),
     );
   }
 
-  Widget wrapWithBottomsheet(Widget child) {
+  Widget wrapWithBottomSheet(Widget child) {
     return SlidingSheet(
       controller: context.watch<SheetController>(),
       elevation: 8,
@@ -106,7 +107,7 @@ class _RecipeCollectorUIState extends State<RecipeCollectorUI> {
     SheetState state,
   ) {
     return Padding(
-      padding: EdgeInsets.all(20),
+      padding: paddingOf(all: 20),
       child: BlocBuilder<OpenRecipeFormProgress$, Progress<EditedRecipe>>(
         builder: buildRecipeFormLoader,
       ),
@@ -143,7 +144,7 @@ class _RecipeCollectorUIState extends State<RecipeCollectorUI> {
   ) {
     return Container(
       height: 40,
-      padding: EdgeInsets.only(top: 8),
+      padding: paddingOf(top: 8),
       alignment: Alignment.topCenter,
       child: Container(
         width: 40,

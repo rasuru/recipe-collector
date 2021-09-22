@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_collector/delete_recipe/state.dart';
+import 'package:recipe_collector/ui/padding.dart';
 
 import 'add_recipe/providers.dart';
 import 'add_recipe/ui.dart';
@@ -36,7 +37,7 @@ class _RecipeFormState extends State<RecipeForm> {
     return wrapInForm([
       if (context.watch<EditedRecipe>().isNewRecipe)
         Padding(
-          padding: EdgeInsets.only(bottom: 20),
+          padding: paddingOf(bottom: 20),
           child: Text(
             'New recipe',
             style: _titleStyle,
@@ -89,20 +90,28 @@ class _RecipeFormState extends State<RecipeForm> {
     return BlocBuilder<IngredientFieldList$, List<IngredientField$>>(
       builder: (_, list) {
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             for (int i = 0; i < list.length; i++)
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
+                padding: paddingOf(vertical: 10),
                 child: MultiProvider(
                   providers: [
                     Provider<IngredientNumber>(
                       create: (_) => IngredientNumber.index(i),
                     ),
-                    Provider<IngredientField$>(create: (_) => list[i]),
+                    Provider<IngredientField$>(
+                      create: (_) => list[i],
+                    ),
                   ],
                   child: IngredientField(),
                 ),
               ),
+            OutlinedButton.icon(
+              onPressed: context.watch<IngredientFieldList$>().addField,
+              icon: Icon(Icons.add),
+              label: Text('Add ingredient'),
+            ),
           ],
         );
       },

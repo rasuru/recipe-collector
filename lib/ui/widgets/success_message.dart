@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_collector/ui/theme.dart';
 
+import '../padding.dart';
+
 class _SuccessMessageState extends State<SuccessMessage> {
   @override
   Widget build(BuildContext context) {
@@ -24,17 +26,14 @@ class _SuccessMessageState extends State<SuccessMessage> {
 
   UITheme get theme => context.read<UITheme>();
   UISuccessColors get colors => theme.success.colors;
-  final padding = EdgeInsets.symmetric(
-    horizontal: 10,
-    vertical: 5,
-  );
+  final padding = paddingOf(horizontal: 10, vertical: 5);
   BoxShadow get boxShadow => BoxShadow(
         color: colors.shadow,
         blurRadius: 4,
         offset: Offset(0, 2),
       );
   BoxDecoration get boxDecoration => BoxDecoration(
-        borderRadius: theme.borderRadius,
+        borderRadius: BorderRadius.circular(theme.borderRadius),
         color: colors.background,
         border: Border.all(
           color: colors.border,

@@ -14,7 +14,7 @@ class IngredientField extends StatelessWidget {
         Expanded(child: IngredientNameField()),
         SizedBox(width: 10),
         SizedBox(
-          width: 100,
+          width: 90,
           child: IngredientAmountField(),
         ),
       ],

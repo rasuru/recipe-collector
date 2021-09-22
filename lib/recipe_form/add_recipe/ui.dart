@@ -32,15 +32,14 @@ class _AddRecipeButtonState extends State<AddRecipeButton> {
   Widget build(BuildContext context) {
     return BlocBuilder<AddRecipeProgress$, Progress>(
       builder: (context, progress) {
-        return ElevatedButton.icon(
+        return ElevatedButton(
           onPressed: () {
             if (widget.validate()) {
               _addRecipe();
               context.read<CloseRecipeForm>()();
             }
           }.nullifyIf(progress.isActive),
-          icon: Icon(Icons.add),
-          label: Text('Add recipe'),
+          child: Icon(Icons.check),
         );
       },
     );

@@ -8,10 +8,15 @@ class IngredientField$ {
     required this.name$,
     required this.amount$,
   });
+
+  IngredientField$.empty()
+      : name$ = TextEditingController(),
+        amount$ = TextEditingController();
 }
 
 class IngredientNumber {
-  final String number;
+  final int index;
+  String get number => '${index + 1}';
 
-  IngredientNumber.index(int index) : number = '${index + 1}';
+  IngredientNumber.index(this.index);
 }

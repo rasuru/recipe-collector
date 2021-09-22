@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:recipe_collector/delete_recipe/use_case.dart';
 import 'package:recipe_collector/progress.dart';
 import 'package:recipe_collector/recipe_form/open_form/use_case.dart';
+import 'package:recipe_collector/ui/padding.dart';
 
 import 'controller.dart';
 import 'domain.dart';
@@ -31,7 +32,7 @@ class RecipeListView extends StatelessWidget {
 
   Widget buildRecipeListView(List<Recipe> recipes) {
     return ListView(
-      padding: EdgeInsets.symmetric(vertical: 20),
+      padding: paddingOf(vertical: 20),
       children: recipes.map((recipe) {
         return RecipeListTile(recipe: recipe);
       }).toList(),
