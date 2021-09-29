@@ -1,3 +1,4 @@
+import '../state/ingredient_field_list.dart';
 import 'domain.dart' as domain;
 import 'use_case.dart';
 
@@ -19,14 +20,4 @@ class AddRecipeController {
           );
         }).toList(),
       );
-}
-
-class Ingredient {
-  final String name;
-  final String amount;
-
-  Ingredient({
-    required this.name,
-    required this.amount,
-  });
 }

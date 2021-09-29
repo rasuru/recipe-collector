@@ -12,6 +12,7 @@ import 'package:time/time.dart';
 
 import '../close_form.dart';
 import '../name_field/state.dart';
+import '../state/ingredient_field_list.dart';
 import 'controller.dart';
 import 'state.dart';
 
@@ -52,6 +53,7 @@ class _SaveChangesButtonState extends State<SaveChangesButton> {
     context.read<SaveChanges>()(
       id: widget.recipeID,
       name: context.read<Name$>().state,
+      ingredients: context.read<IngredientFieldList$>().ingredients,
     );
   }
 

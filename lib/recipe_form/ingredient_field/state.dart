@@ -5,9 +5,10 @@ class IngredientField$ {
   final TextEditingController amount$;
 
   IngredientField$({
-    required this.name$,
-    required this.amount$,
-  });
+    required String? initialName,
+    required String? initialAmount,
+  })  : name$ = TextEditingController(text: initialName),
+        amount$ = TextEditingController(text: initialAmount);
 
   IngredientField$.empty()
       : name$ = TextEditingController(),

@@ -2,10 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:recipe_collector/extensions/list.dart';
 
 import '../ingredient_field/state.dart';
-import '../add_recipe/controller.dart';
 
 class IngredientFieldList$ extends Cubit<List<IngredientField$>> {
-  IngredientFieldList$() : super([IngredientField$.empty()]);
+  IngredientFieldList$(List<IngredientField$> fields) : super(fields);
+  IngredientFieldList$.empty() : super([IngredientField$.empty()]);
 
   void addField() => emit(state.append(IngredientField$.empty()));
   void removeField(int index) => emit(state.dropItem(index));
@@ -16,4 +16,14 @@ class IngredientFieldList$ extends Cubit<List<IngredientField$>> {
           amount: field.amount$.text,
         );
       }).toList();
+}
+
+class Ingredient {
+  final String name;
+  final String amount;
+
+  Ingredient({
+    required this.name,
+    required this.amount,
+  });
 }

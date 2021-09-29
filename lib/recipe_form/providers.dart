@@ -4,6 +4,7 @@ import 'package:sliding_sheet/sliding_sheet.dart';
 
 import 'close_form.dart';
 import 'domain.dart';
+import 'ingredient_field/state.dart';
 import 'name_field/state.dart';
 import 'open_form/use_case.dart';
 import 'reset_form.dart';
@@ -36,7 +37,13 @@ List<Provider> createRecipeFormProviders({
       ),
     ),
     Provider<IngredientFieldList$>(
-      create: (_) => IngredientFieldList$(),
+      create: (_) =>
+          IngredientFieldList$(editedRecipe.ingredients.map((ingredient) {
+        return IngredientField$(
+          initialName: ingredient.name,
+          initialAmount: ingredient.amount,
+        );
+      }).toList()),
     ),
   ];
 }
