@@ -5,6 +5,7 @@ class AddRecipeUseCase {
   final Future<void> Function({
     required String id,
     required String name,
+    required List<Ingredient> ingredients,
   }) store;
   final void Function(Progress) present;
 
@@ -15,11 +16,13 @@ class AddRecipeUseCase {
 
   Future<void> call({
     required String name,
+    required List<Ingredient> ingredients,
   }) async {
     present(Active());
     await store(
       id: generateNewRecipeID(),
       name: name,
+      ingredients: ingredients,
     );
     present(Completed(null));
   }

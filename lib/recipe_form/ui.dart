@@ -96,6 +96,7 @@ class _RecipeFormState extends State<RecipeForm> {
               Padding(
                 padding: paddingOf(vertical: 10),
                 child: MultiProvider(
+                  key: ValueKey(list[i].hashCode),
                   providers: [
                     Provider<IngredientNumber>(
                       create: (_) => IngredientNumber.index(i),

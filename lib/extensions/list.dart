@@ -3,7 +3,7 @@ extension ListExtension<A> on List<A> {
 
   List<A> dropItem(int index) {
     return [
-      for (int i = 0; i < this.length; i++)
+      for (int i = 0; i < length; i++)
         if (i != index) this[i]
     ];
   }

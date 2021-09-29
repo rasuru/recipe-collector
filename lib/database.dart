@@ -12,7 +12,7 @@ Future<void> setupDatabase() async {
   await ensurePathExists(databasesDir);
   db = BriteDatabase(await openDatabase(
     path.join(databasesDir, 'recipes.db'),
-    version: 1,
+    version: 3,
     onCreate: createDatabase,
   ));
 }
@@ -24,7 +24,9 @@ Future ensurePathExists(String path) async {
 }
 
 Future<void> createDatabase(Database db, int version) async {
+  await db.execute('PRAGMA foreign_keys = ON;');
   await db.execute(RecipeTable.scheme);
+  await db.execute(IngredientTable.scheme);
 }
 
 class RecipeTable {
@@ -40,4 +42,24 @@ CREATE TABLE ${name} (
 class RecipeTableColumns {
   final id = 'id';
   final name = 'name';
+}
+
+class IngredientTable {
+  static final name = 'ingredients';
+  static final columns = IngredientTableColumns();
+  static final scheme = '''
+CREATE TABLE ${name} (
+  ${columns.recipeID} TEXT
+                      REFERENCES ${RecipeTable.name}(${RecipeTableColumns().id})
+                      ON DELETE CASCADE,
+  ${columns.name} TEXT,
+  ${columns.amount} TEXT,
+  PRIMARY KEY (${columns.recipeID}, ${columns.name})
+);''';
+}
+
+class IngredientTableColumns {
+  final recipeID = 'recipe_id';
+  final name = 'name';
+  final amount = 'amount';
 }
