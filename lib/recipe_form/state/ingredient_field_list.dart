@@ -5,7 +5,6 @@ import '../ingredient_field/state.dart';
 
 class IngredientFieldList$ extends Cubit<List<IngredientField$>> {
   IngredientFieldList$(List<IngredientField$> fields) : super(fields);
-  IngredientFieldList$.empty() : super([IngredientField$.empty()]);
 
   void addField() => emit(state.append(IngredientField$.empty()));
   void removeField(int index) => emit(state.dropItem(index));

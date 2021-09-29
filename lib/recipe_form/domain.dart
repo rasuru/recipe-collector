@@ -14,7 +14,7 @@ class EditedRecipe {
   EditedRecipe.empty()
       : maybeID = None(),
         name = '',
-        ingredients = [];
+        ingredients = [EditedIngredient.empty()];
 
   bool get isNewRecipe => maybeID.isNone();
 }
@@ -27,4 +27,8 @@ class EditedIngredient {
     required this.name,
     required this.amount,
   });
+
+  EditedIngredient.empty()
+      : name = '',
+        amount = '';
 }

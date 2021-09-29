@@ -30,4 +30,5 @@ Future<void> insertRecipe({
       );
     }
   });
+  db.sendTableTrigger([RecipeTable.name, IngredientTable.name]);
 }
