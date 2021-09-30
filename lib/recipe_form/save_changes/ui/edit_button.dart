@@ -1,20 +1,14 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_collector/extensions/global.dart';
 import 'package:recipe_collector/progress.dart';
-import 'package:recipe_collector/ui/theme.dart';
-import 'package:recipe_collector/ui/widgets/success_message.dart';
-import 'package:time/time.dart';
 
-import '../close_form.dart';
-import '../name_field/state.dart';
-import '../state/ingredient_field_list.dart';
-import 'controller.dart';
-import 'state.dart';
+import '../../close_form.dart';
+import '../../name_field/state.dart';
+import '../../state/ingredient_field_list.dart';
+import '../controller.dart';
+import '../state.dart';
 
 class SaveChangesButton extends StatefulWidget {
   final bool Function() validate;
@@ -55,44 +49,5 @@ class _SaveChangesButtonState extends State<SaveChangesButton> {
       name: context.read<Name$>().state,
       ingredients: context.read<IngredientFieldList$>().ingredients,
     );
-  }
-
-  late final FToast fToast;
-  late final StreamSubscription _toastListener;
-  @override
-  void initState() {
-    super.initState();
-    fToast = FToast();
-    fToast.init(context);
-    _toastListener = context
-        .read<SaveChangesProgress$>()
-        .stream
-        .listen(handleEditRecipeProgress);
-  }
-
-  void handleEditRecipeProgress(Progress progress) {
-    if (progress.isCompleted) {
-      fToast.removeCustomToast();
-      showSuccesssMessage();
-    }
-  }
-
-  void showSuccesssMessage() {
-    fToast.showToast(
-      gravity: ToastGravity.CENTER,
-      toastDuration: 2.seconds,
-      child: MultiProvider(
-        providers: [
-          Provider.value(value: context.read<UITheme>()),
-        ],
-        child: SuccessMessage(message: 'Changes are saved'),
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _toastListener.cancel();
-    super.dispose();
   }
 }

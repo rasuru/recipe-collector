@@ -7,11 +7,11 @@ import 'use_case.dart';
 
 List<Provider> createSaveChangesProviders() {
   return [
-    Provider<SaveChangesProgress$>(create: (_) => SaveChangesProgress$()),
     Provider<SaveChanges>(
       create: (context) => SaveChanges(
         SaveChangesUseCase(
           present: context.read<SaveChangesProgress$>(),
+          store: insertRecipe,
           update: updateRecipe,
         ),
       ),

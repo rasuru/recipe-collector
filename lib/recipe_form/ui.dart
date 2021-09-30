@@ -6,8 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:recipe_collector/delete_recipe/state.dart';
 import 'package:recipe_collector/ui/padding.dart';
 
-import 'add_recipe/providers.dart';
-import 'add_recipe/ui.dart';
 import 'close_form.dart';
 import 'domain.dart';
 import 'ingredient_field/state.dart';
@@ -16,7 +14,8 @@ import 'name_field/ui.dart';
 import 'open_form/use_case.dart';
 import 'reset_form.dart';
 import 'save_changes/providers.dart';
-import 'save_changes/ui.dart';
+import 'save_changes/ui/add_button.dart';
+import 'save_changes/ui/edit_button.dart';
 import 'state/ingredient_field_list.dart';
 
 class RecipeForm extends StatefulWidget {
@@ -139,7 +138,7 @@ class _RecipeFormState extends State<RecipeForm> {
       SizedBox(width: 20),
       Expanded(
         child: MultiProvider(
-          providers: createAddRecipeProviders(),
+          providers: createSaveChangesProviders(),
           child: AddRecipeButton(
             validate: validate,
           ),

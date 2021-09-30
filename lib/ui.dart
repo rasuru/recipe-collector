@@ -1,14 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_collector/ui/padding.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
-import 'package:time/time.dart';
 
-import 'delete_recipe/state.dart';
 import 'progress.dart';
 import 'recipe_form/domain.dart';
 import 'recipe_form/open_form/state.dart';
@@ -18,7 +13,7 @@ import 'recipe_form/ui.dart';
 import 'recipe_list/providers.dart';
 import 'recipe_list/ui.dart';
 import 'ui/theme.dart';
-import 'ui/widgets/success_message.dart';
+import 'ui/toast_overlay.dart';
 
 class RecipeCollectorUI extends StatefulWidget {
   RecipeCollectorUI({
@@ -45,41 +40,12 @@ class _RecipeCollectorUIState extends State<RecipeCollectorUI> {
     );
   }
 
-  late final FToast fToast;
-  late final StreamSubscription deleteRecipeHandler;
-  @override
-  void initState() {
-    super.initState();
-    fToast = FToast();
-    fToast.init(context);
-    final deleteRecipeProgress$ = context.read<DeleteRecipeProgress$>();
-
-    deleteRecipeHandler = deleteRecipeProgress$.stream.listen((progress) {
-      if (progress.isCompleted) {
-        fToast.showToast(
-          gravity: ToastGravity.CENTER,
-          toastDuration: 1.seconds,
-          child: MultiProvider(
-            providers: [
-              Provider.value(value: context.read<UITheme>()),
-            ],
-            child: SuccessMessage(message: 'Recipe deleted'),
-          ),
-        );
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    deleteRecipeHandler.cancel();
-    super.dispose();
-  }
-
   Widget buildScaffold(Widget child) {
     return Scaffold(
       body: SafeArea(
-        child: wrapWithBottomSheet(child),
+        child: ToastOverlay(
+          wrapWithBottomSheet(child),
+        ),
       ),
     );
   }
