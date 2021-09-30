@@ -15,6 +15,8 @@ class IngredientFieldList$ extends Cubit<List<IngredientField$>> {
           amount: field.amount$.text,
         );
       }).toList();
+
+  bool get userCanRemoveFields => state.length > 1;
 }
 
 class Ingredient {

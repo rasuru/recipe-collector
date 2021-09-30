@@ -16,18 +16,25 @@ class IngredientNameField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: 'Ingredient #' + context.watch<IngredientNumber>().number,
         contentPadding: theme.inputPadding.copyWith(right: 0),
-        suffixIcon: SizedBox(
-          width: 24,
-          child: TextButton(
-            onPressed: () => context.read<IngredientFieldList$>().removeField(
-                  context.read<IngredientNumber>().index,
-                ),
-            child: Icon(Icons.delete),
-          ),
-        ),
+        suffixIcon: Builder(builder: buildRemoveButton),
       ),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (name) => validateIngredientName(name ?? ''),
+    );
+  }
+
+  Widget buildRemoveButton(BuildContext context) {
+    return Visibility(
+      visible: context.watch<IngredientFieldList$>().userCanRemoveFields,
+      child: SizedBox(
+        width: 24,
+        child: TextButton(
+          onPressed: () => context.read<IngredientFieldList$>().removeField(
+                context.read<IngredientNumber>().index,
+              ),
+          child: Icon(Icons.delete),
+        ),
+      ),
     );
   }
 }
