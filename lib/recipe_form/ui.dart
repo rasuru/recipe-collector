@@ -37,7 +37,7 @@ class _RecipeFormState extends State<RecipeForm> {
     return wrapInForm([
       if (context.watch<EditedRecipe>().isNewRecipe)
         Padding(
-          padding: paddingOf(bottom: 20),
+          padding: paddingOf(vertical: 20),
           child: Text(
             'New recipe',
             style: _titleStyle,
@@ -47,7 +47,7 @@ class _RecipeFormState extends State<RecipeForm> {
       NameField(),
       SizedBox(height: 20),
       buildIngredientFields(),
-      SizedBox(height: 20),
+      SizedBox(height: 40),
       buildButtons(),
     ]);
   }
