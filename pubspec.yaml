@@ -26,6 +26,7 @@ dependencies:
   sqlbrite: ^2.1.0
   flutter_styled_toast: ^2.0.0
   sliding_sheet: ^0.5.0
+  image_picker: ^0.8.4+2
 
 dev_dependencies:
   flutter_test:

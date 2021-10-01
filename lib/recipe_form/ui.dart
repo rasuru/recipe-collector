@@ -9,6 +9,7 @@ import 'package:recipe_collector/ui/padding.dart';
 import 'close_form.dart';
 import 'cooking_step_field/state.dart';
 import 'cooking_step_field/ui.dart';
+import 'cover_image_picker/ui.dart';
 import 'domain.dart';
 import 'ingredient_field/state.dart';
 import 'ingredient_field/ui.dart';
@@ -47,6 +48,8 @@ class _RecipeFormState extends State<RecipeForm> {
           ),
         ),
       NameField(),
+      SizedBox(height: 20),
+      CoverImagePicker(),
       SizedBox(height: 20),
       buildIngredientFields(),
       SizedBox(height: 20),
