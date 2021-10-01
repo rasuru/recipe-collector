@@ -6,6 +6,7 @@ import 'package:recipe_collector/progress.dart';
 
 import '../../close_form.dart';
 import '../../name_field/state.dart';
+import '../../state/cooking_step_field_list.dart';
 import '../../state/ingredient_field_list.dart';
 import '../controller.dart';
 import '../state.dart';
@@ -41,11 +42,12 @@ class _AddRecipeButtonState extends State<AddRecipeButton> {
   }
 
   void _addRecipe() {
-    final saveChanges = context.read<SaveChanges>();
+    final saveChanges = context.read<SaveChanges>().store;
 
     saveChanges(
       name: context.read<Name$>().state,
       ingredients: context.read<IngredientFieldList$>().ingredients,
+      cookingSteps: context.read<CookingStepFieldList$>().steps,
     );
   }
 }

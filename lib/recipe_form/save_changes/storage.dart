@@ -2,21 +2,17 @@ import 'package:recipe_collector/database.dart';
 
 import 'domain.dart';
 
-Future<void> insertRecipe({
-  required String id,
-  required String name,
-  required List<Ingredient> ingredients,
-}) async {
+Future<void> insertRecipe(String id, NewRecipe recipe) async {
   await db.transaction((t) async {
     await t.insert(
       RecipeTable.name,
       {
         RecipeTable.columns.id: id,
-        RecipeTable.columns.name: name,
+        RecipeTable.columns.name: recipe.name,
       },
     );
 
-    for (final ingredient in ingredients) {
+    for (final ingredient in recipe.ingredients) {
       await t.insert(
         IngredientTable.name,
         {
@@ -26,36 +22,45 @@ Future<void> insertRecipe({
         },
       );
     }
+
+    for (int i = 0; i < recipe.cookingSteps.length; i++) {
+      final step = recipe.cookingSteps[i];
+
+      await t.insert(
+        CookingStepTable.name,
+        {
+          CookingStepTable.columns.recipeID: id,
+          CookingStepTable.columns.id: i,
+          CookingStepTable.columns.text: step,
+        },
+      );
+    }
   });
   db.sendTableTrigger([RecipeTable.name, IngredientTable.name]);
 }
 
-Future<void> updateRecipe({
-  required String id,
-  required String? name,
-  required List<Ingredient> ingredients,
-}) async {
+Future<void> updateRecipe(UpdatedRecipe recipe) async {
   await db.transaction((t) async {
     await t.update(
       RecipeTable.name,
       {
-        if (name != null) RecipeTable.columns.name: name,
+        if (recipe.name != null) RecipeTable.columns.name: recipe.name,
       },
-      where: '${RecipeTableColumns().id} = ?',
-      whereArgs: [id],
+      where: '${RecipeTable.columns.id} = ?',
+      whereArgs: [recipe.id],
     );
 
     await t.delete(
       IngredientTable.name,
-      where: '${IngredientTableColumns().recipeID} = ?',
-      whereArgs: [id],
+      where: '${IngredientTable.columns.recipeID} = ?',
+      whereArgs: [recipe.id],
     );
 
-    for (final ingredient in ingredients) {
+    for (final ingredient in recipe.ingredients) {
       await t.insert(
         IngredientTable.name,
         {
-          IngredientTable.columns.recipeID: id,
+          IngredientTable.columns.recipeID: recipe.id,
           IngredientTable.columns.name: ingredient.name,
           IngredientTable.columns.amount: ingredient.amount,
         },

@@ -7,6 +7,8 @@ import 'package:recipe_collector/delete_recipe/state.dart';
 import 'package:recipe_collector/ui/padding.dart';
 
 import 'close_form.dart';
+import 'cooking_step_field/state.dart';
+import 'cooking_step_field/ui.dart';
 import 'domain.dart';
 import 'ingredient_field/state.dart';
 import 'ingredient_field/ui.dart';
@@ -16,6 +18,7 @@ import 'reset_form.dart';
 import 'save_changes/providers.dart';
 import 'save_changes/ui/add_button.dart';
 import 'save_changes/ui/edit_button.dart';
+import 'state/cooking_step_field_list.dart';
 import 'state/ingredient_field_list.dart';
 
 class RecipeForm extends StatefulWidget {
@@ -46,6 +49,8 @@ class _RecipeFormState extends State<RecipeForm> {
       NameField(),
       SizedBox(height: 20),
       buildIngredientFields(),
+      SizedBox(height: 20),
+      buildCookingStepFields(),
       SizedBox(height: 40),
       buildButtons(),
     ]);
@@ -111,6 +116,39 @@ class _RecipeFormState extends State<RecipeForm> {
               onPressed: context.watch<IngredientFieldList$>().addField,
               icon: Icon(Icons.add),
               label: Text('Add ingredient'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget buildCookingStepFields() {
+    return BlocBuilder<CookingStepFieldList$, List<CookingStepField$>>(
+      builder: (_, list) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (int i = 0; i < list.length; i++)
+              Padding(
+                padding: paddingOf(vertical: 10),
+                child: MultiProvider(
+                  key: ValueKey(list[i].hashCode),
+                  providers: [
+                    Provider<CookingStepNumber>(
+                      create: (_) => CookingStepNumber.index(i),
+                    ),
+                    Provider<CookingStepField$>(
+                      create: (_) => list[i],
+                    ),
+                  ],
+                  child: CookingStepField(),
+                ),
+              ),
+            OutlinedButton.icon(
+              onPressed: context.watch<CookingStepFieldList$>().addField,
+              icon: Icon(Icons.add),
+              label: Text('Add step'),
             ),
           ],
         );

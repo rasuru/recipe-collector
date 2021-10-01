@@ -3,11 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
 import 'close_form.dart';
+import 'cooking_step_field/state.dart';
 import 'domain.dart';
 import 'ingredient_field/state.dart';
 import 'name_field/state.dart';
 import 'open_form/use_case.dart';
 import 'reset_form.dart';
+import 'state/cooking_step_field_list.dart';
 import 'state/ingredient_field_list.dart';
 
 List<Provider> createRecipeFormProviders({
@@ -44,6 +46,11 @@ List<Provider> createRecipeFormProviders({
           initialAmount: ingredient.amount,
         );
       }).toList()),
+    ),
+    Provider<CookingStepFieldList$>(
+      create: (_) => CookingStepFieldList$(editedRecipe.cookingSteps
+          .map((step) => CookingStepField$(initialText: step))
+          .toList()),
     ),
   ];
 }
