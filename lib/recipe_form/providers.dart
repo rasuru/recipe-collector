@@ -4,6 +4,7 @@ import 'package:sliding_sheet/sliding_sheet.dart';
 
 import 'close_form.dart';
 import 'cooking_step_field/state.dart';
+import 'cover_image_picker/state.dart';
 import 'domain.dart';
 import 'ingredient_field/state.dart';
 import 'name_field/state.dart';
@@ -52,5 +53,6 @@ List<Provider> createRecipeFormProviders({
           .map((step) => CookingStepField$(initialText: step))
           .toList()),
     ),
+    Provider<CoverImage$>(create: (_) => CoverImage$()),
   ];
 }
