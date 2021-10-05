@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+
+import 'package:dartz/dartz.dart';
 import 'package:uuid/uuid.dart';
 
 String generateNewRecipeID() {
@@ -6,25 +9,13 @@ String generateNewRecipeID() {
 
 class NewRecipe {
   final String name;
+  final Option<Uint8List> optionalCoverImage;
   final List<Ingredient> ingredients;
   final List<String> cookingSteps;
 
   NewRecipe({
     required this.name,
-    required this.ingredients,
-    required this.cookingSteps,
-  });
-}
-
-class UpdatedRecipe {
-  final String id;
-  final String? name;
-  final List<Ingredient> ingredients;
-  final List<String> cookingSteps;
-
-  UpdatedRecipe({
-    required this.id,
-    required this.name,
+    required this.optionalCoverImage,
     required this.ingredients,
     required this.cookingSteps,
   });

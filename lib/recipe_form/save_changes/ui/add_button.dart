@@ -5,6 +5,7 @@ import 'package:recipe_collector/extensions/global.dart';
 import 'package:recipe_collector/progress.dart';
 
 import '../../close_form.dart';
+import '../../cover_image_picker/state.dart';
 import '../../name_field/state.dart';
 import '../../state/cooking_step_field_list.dart';
 import '../../state/ingredient_field_list.dart';
@@ -46,6 +47,7 @@ class _AddRecipeButtonState extends State<AddRecipeButton> {
 
     saveChanges(
       name: context.read<Name$>().state,
+      optionalCoverImage: context.read<CoverImage$>().state,
       ingredients: context.read<IngredientFieldList$>().ingredients,
       cookingSteps: context.read<CookingStepFieldList$>().steps,
     );

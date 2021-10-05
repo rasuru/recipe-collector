@@ -5,7 +5,6 @@ import 'package:recipe_collector/ui/padding.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
 import 'progress.dart';
-import 'recipe_form/domain.dart';
 import 'recipe_form/open_form/state.dart';
 import 'recipe_form/open_form/use_case.dart';
 import 'recipe_form/providers.dart';

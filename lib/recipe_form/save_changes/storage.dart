@@ -9,6 +9,7 @@ Future<void> insertRecipe(String id, NewRecipe recipe) async {
       {
         RecipeTable.columns.id: id,
         RecipeTable.columns.name: recipe.name,
+        RecipeTable.columns.coverImage: recipe.optionalCoverImage.toNullable(),
       },
     );
 
@@ -39,28 +40,29 @@ Future<void> insertRecipe(String id, NewRecipe recipe) async {
   db.sendTableTrigger([RecipeTable.name, IngredientTable.name]);
 }
 
-Future<void> updateRecipe(UpdatedRecipe recipe) async {
+Future<void> updateRecipe(String id, NewRecipe recipe) async {
   await db.transaction((t) async {
     await t.update(
       RecipeTable.name,
       {
-        if (recipe.name != null) RecipeTable.columns.name: recipe.name,
+        RecipeTable.columns.name: recipe.name,
+        RecipeTable.columns.coverImage: recipe.optionalCoverImage.toNullable(),
       },
       where: '${RecipeTable.columns.id} = ?',
-      whereArgs: [recipe.id],
+      whereArgs: [id],
     );
 
     await t.delete(
       IngredientTable.name,
       where: '${IngredientTable.columns.recipeID} = ?',
-      whereArgs: [recipe.id],
+      whereArgs: [id],
     );
 
     for (final ingredient in recipe.ingredients) {
       await t.insert(
         IngredientTable.name,
         {
-          IngredientTable.columns.recipeID: recipe.id,
+          IngredientTable.columns.recipeID: id,
           IngredientTable.columns.name: ingredient.name,
           IngredientTable.columns.amount: ingredient.amount,
         },

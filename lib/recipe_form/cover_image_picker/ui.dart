@@ -136,14 +136,11 @@ class CoverImagePicker extends StatelessWidget {
   Widget buildNoImageSign() {
     return Container(
       alignment: Alignment.center,
-      decoration: BoxDecoration(color: Colors.grey.shade300),
-      child: Text(
-        'No cover image',
-        style: TextStyle(
-          fontSize: 36,
-          fontWeight: FontWeight.bold,
-          color: Colors.grey,
-        ),
+      color: Colors.grey.shade200,
+      child: Icon(
+        Icons.local_dining,
+        size: 80,
+        color: Colors.grey.shade400,
       ),
     );
   }

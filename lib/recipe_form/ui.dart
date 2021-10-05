@@ -10,12 +10,11 @@ import 'close_form.dart';
 import 'cooking_step_field/state.dart';
 import 'cooking_step_field/ui.dart';
 import 'cover_image_picker/ui.dart';
-import 'domain.dart';
 import 'ingredient_field/state.dart';
 import 'ingredient_field/ui.dart';
 import 'name_field/ui.dart';
+import 'open_form/state.dart';
 import 'open_form/use_case.dart';
-import 'reset_form.dart';
 import 'save_changes/providers.dart';
 import 'save_changes/ui/add_button.dart';
 import 'save_changes/ui/edit_button.dart';
@@ -172,7 +171,7 @@ class _RecipeFormState extends State<RecipeForm> {
     return Row(children: [
       Expanded(
         child: OutlinedButton(
-          onPressed: context.read<ResetRecipeForm>(),
+          onPressed: context.read<OpenRecipeFormUseCase>().resetForm,
           child: Text('Reset'),
         ),
       ),
@@ -188,7 +187,7 @@ class _RecipeFormState extends State<RecipeForm> {
     ]);
   }
 
-  Widget buildEditRecipeModeButtons(recipeID) {
+  Widget buildEditRecipeModeButtons(String recipeID) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -211,7 +210,8 @@ class _RecipeFormState extends State<RecipeForm> {
           SizedBox(width: 20),
           Expanded(
             child: OutlinedButton(
-              onPressed: () => context.read<ResetRecipeForm>()(),
+              onPressed: () =>
+                  context.read<OpenRecipeFormUseCase>().resetForm(),
               child: Text('Reset'),
             ),
           ),

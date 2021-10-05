@@ -9,6 +9,8 @@ abstract class Progress<Result> with EquatableMixin {
 
   get props => [runtimeType, Result];
 
+  Progress<B> map<B>(B Function(Result) fn);
+
   Option<Result> get maybeResult {
     final progress = this;
 
@@ -27,6 +29,9 @@ class Idle<Result> extends Progress<Result> {
   final isIdle = true;
 
   @override
+  Idle<B> map<B>(_) => Idle();
+
+  @override
   B fold<B>({
     required B Function() ifIdle,
     required B Function() ifActive,
@@ -38,6 +43,9 @@ class Idle<Result> extends Progress<Result> {
 
 class Active<Result> extends Progress<Result> {
   final isActive = true;
+
+  @override
+  Active<B> map<B>(_) => Active();
 
   @override
   B fold<B>({
@@ -58,6 +66,9 @@ class Completed<Result> extends Progress<Result> {
   Completed(this.result);
 
   @override
+  Completed<B> map<B>(fn) => Completed(fn(result));
+
+  @override
   B fold<B>({
     required B Function() ifIdle,
     required B Function() ifActive,
@@ -74,6 +85,9 @@ class Failed<Result, Reason> extends Progress<Result> {
   get props => [reason, ...super.props];
 
   Failed(this.reason);
+
+  @override
+  Failed<B, Reason> map<B>(_) => Failed(reason);
 
   @override
   B fold<B>({

@@ -5,6 +5,7 @@ import '../domain.dart';
 class OpenRecipeFormUseCase {
   final Future<EditedRecipe> Function(String) retrieveRecipe;
   final void Function(Progress<EditedRecipe>) presentProgress;
+  EditedRecipe _lastOpenRecipe = EditedRecipe.empty();
 
   OpenRecipeFormUseCase({
     required this.retrieveRecipe,
@@ -13,12 +14,19 @@ class OpenRecipeFormUseCase {
 
   Future<void> call(String id) async {
     presentProgress(Active());
-    presentProgress(Completed(
-      await retrieveRecipe(id),
-    ));
+    presentCompleted(await retrieveRecipe(id));
   }
 
   void emptyForm() {
-    presentProgress(Completed(EditedRecipe.empty()));
+    presentCompleted(EditedRecipe.empty());
+  }
+
+  void resetForm() {
+    presentCompleted(_lastOpenRecipe);
+  }
+
+  void presentCompleted(EditedRecipe recipe) {
+    _lastOpenRecipe = recipe;
+    presentProgress(Completed(recipe));
   }
 }

@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 
 class CoverImage$ extends Cubit<Option<Uint8List>> {
-  CoverImage$() : super(None());
+  CoverImage$(Option<Uint8List> initial) : super(initial);
 
   void reset() => emit(None());
 

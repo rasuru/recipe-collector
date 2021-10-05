@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dartz/dartz.dart';
 import 'package:recipe_collector/database.dart';
 
@@ -9,12 +11,14 @@ Future<EditedRecipe> queryRecipe(String id) async {
     where: '${RecipeTable.columns.id} = ?',
     whereArgs: [id],
   ))[0];
+  final coverImage = row[RecipeTable.columns.coverImage] as Uint8List?;
   final ingredients = await queryIngredients(id);
   final cookingSteps = await queryCookingSteps(id);
 
   return EditedRecipe(
     maybeID: Some(id),
-    name: row['name'] as String,
+    name: row[RecipeTable.columns.name] as String,
+    optionalCoverImage: optionOf(coverImage),
     ingredients: ingredients,
     cookingSteps: cookingSteps,
   );

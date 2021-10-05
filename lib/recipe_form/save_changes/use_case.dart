@@ -3,12 +3,12 @@ import 'package:recipe_collector/progress.dart';
 import 'domain.dart';
 
 class SaveChangesUseCase {
-  final Future<void> Function(UpdatedRecipe) _update;
+  final Future<void> Function(String, NewRecipe) _update;
   final Future<void> Function(String, NewRecipe) _store;
   final void Function(Progress) present;
 
   SaveChangesUseCase({
-    required Future<void> Function(UpdatedRecipe) update,
+    required Future<void> Function(String, NewRecipe) update,
     required Future<void> Function(String, NewRecipe) store,
     required this.present,
   })  : _store = store,
@@ -20,9 +20,9 @@ class SaveChangesUseCase {
     present(Completed(null));
   }
 
-  Future<void> update(UpdatedRecipe recipe) async {
+  Future<void> update(String id, NewRecipe recipe) async {
     present(Active());
-    await _update(recipe);
+    await _update(id, recipe);
     present(Completed(null));
   }
 }

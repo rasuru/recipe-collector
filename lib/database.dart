@@ -36,13 +36,15 @@ class RecipeTable {
   static final scheme = '''
 CREATE TABLE ${name} (
   ${columns.id} TEXT PRIMARY KEY,
-  ${columns.name} TEXT
+  ${columns.name} TEXT,
+  ${columns.coverImage} BLOB
 );''';
 }
 
 class _RecipeTableColumns {
   final id = 'id';
   final name = 'name';
+  final coverImage = 'cover_image';
 }
 
 class IngredientTable {
