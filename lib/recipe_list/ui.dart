@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_collector/delete_recipe/use_case.dart';
 import 'package:recipe_collector/progress.dart';
+import 'package:recipe_collector/recipe_details/state.dart';
 import 'package:recipe_collector/recipe_form/open_form/use_case.dart';
 import 'package:recipe_collector/ui/padding.dart';
 
@@ -37,6 +38,7 @@ class RecipeListView extends StatelessWidget {
         children: recipes.map((recipe) {
           return InkWell(
             onLongPress: () => showActions(context, recipe),
+            onTap: () => context.read<ViewedRecipe$>().set(recipe.id),
             child: Padding(
               padding: paddingOf(all: 20),
               child: RecipeListTile(recipe: recipe),
