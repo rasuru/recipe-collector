@@ -38,7 +38,7 @@ class RecipeListView extends StatelessWidget {
         children: recipes.map((recipe) {
           return InkWell(
             onLongPress: () => showActions(context, recipe),
-            onTap: () => context.read<ViewedRecipe$>().set(recipe.id),
+            onTap: () => context.read<ViewedRecipeID$>().set(recipe.id),
             child: Padding(
               padding: paddingOf(all: 20),
               child: RecipeListTile(recipe: recipe),

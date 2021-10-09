@@ -12,7 +12,7 @@ List<Provider> createGlobalProviders() {
     Provider<SheetController>(create: (_) => SheetController()),
     Provider<UITheme>(create: (_) => UITheme()),
     Provider<SaveChangesProgress$>(create: (_) => SaveChangesProgress$()),
-    Provider<ViewedRecipe$>(create: (_) => ViewedRecipe$()),
+    Provider<ViewedRecipeID$>(create: (_) => ViewedRecipeID$()),
     ...createOpenFormProviders(),
     ...createDeleteRecipeProviders(),
   ];

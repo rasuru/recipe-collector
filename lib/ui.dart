@@ -20,6 +20,7 @@ class _RecipeCollectorUIState extends State<RecipeCollectorUI> {
     return MaterialApp(
       themeMode: ThemeMode.light,
       theme: context.read<UITheme>().flutterTheme,
+      debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       onGenerateRoute: (_) => null,
       builder: (_, __) => buildRouter(),
