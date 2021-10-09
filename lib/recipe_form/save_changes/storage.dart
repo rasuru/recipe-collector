@@ -68,6 +68,22 @@ Future<void> updateRecipe(String id, NewRecipe recipe) async {
         },
       );
     }
+
+    await t.delete(
+      CookingStepTable.name,
+      where: '${CookingStepTable.columns.recipeID} = ?',
+      whereArgs: [id],
+    );
+
+    for (final step in recipe.cookingSteps) {
+      await t.insert(
+        CookingStepTable.name,
+        {
+          CookingStepTable.columns.recipeID: id,
+          CookingStepTable.columns.text: step,
+        },
+      );
+    }
   });
   db.sendTableTrigger([RecipeTable.name, IngredientTable.name]);
 }
