@@ -1,3 +1,4 @@
+import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -85,6 +86,23 @@ class RecipeListView extends StatelessWidget {
 
 class RecipeListTile extends StatelessWidget {
   final Recipe recipe;
+  static final borderRadius = BorderRadius.circular(10);
+  static final decoration = BoxDecoration(
+    color: Colors.white,
+    borderRadius: borderRadius,
+    boxShadow: [
+      BoxShadow(
+        offset: const Offset(0, 2),
+        blurRadius: 16,
+        color: Colors.black12,
+      ),
+      BoxShadow(
+        offset: const Offset(0, 0),
+        blurRadius: 2,
+        color: Colors.black12,
+      ),
+    ],
+  );
 
   RecipeListTile({
     Key? key,
@@ -93,25 +111,8 @@ class RecipeListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final borderRadius = BorderRadius.circular(10);
-
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: borderRadius,
-        boxShadow: [
-          BoxShadow(
-            offset: const Offset(0, 2),
-            blurRadius: 16,
-            color: Colors.black12,
-          ),
-          BoxShadow(
-            offset: const Offset(0, 0),
-            blurRadius: 2,
-            color: Colors.black12,
-          ),
-        ],
-      ),
+      decoration: decoration,
       child: ClipRRect(
         borderRadius: borderRadius,
         child: Column(
@@ -120,11 +121,33 @@ class RecipeListTile extends StatelessWidget {
             buildCoverImage(),
             Padding(
               padding: paddingOf(all: 15),
-              child: buildTitle(),
+              child: buildChips(),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildChips() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        buildTitle(),
+        SizedBox(height: 5),
+        Wrap(children: [
+          recipe.preparationTime.fold(
+            () => Container(),
+            (time) => Chip(
+              visualDensity: VisualDensity.compact,
+              labelPadding: paddingOf(right: 4),
+              backgroundColor: Colors.blue.shade50,
+              avatar: Icon(Icons.timer, size: 18),
+              label: Text(prettyDuration(time, abbreviated: true)),
+            ),
+          ),
+        ]),
+      ],
     );
   }
 

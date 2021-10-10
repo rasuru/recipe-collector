@@ -37,6 +37,7 @@ class RecipeTable {
 CREATE TABLE ${name} (
   ${columns.id} TEXT PRIMARY KEY,
   ${columns.name} TEXT,
+  ${columns.preparationTime} INT,
   ${columns.coverImage} BLOB
 );''';
 }
@@ -44,6 +45,7 @@ CREATE TABLE ${name} (
 class _RecipeTableColumns {
   final id = 'id';
   final name = 'name';
+  final preparationTime = 'preparation_time';
   final coverImage = 'cover_image';
 }
 

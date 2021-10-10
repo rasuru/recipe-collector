@@ -12,13 +12,15 @@ class NewRecipe {
   final Option<Uint8List> optionalCoverImage;
   final List<Ingredient> ingredients;
   final List<String> cookingSteps;
+  final Duration preparationTime;
 
   NewRecipe({
     required this.name,
     required this.optionalCoverImage,
     required this.ingredients,
     required this.cookingSteps,
-  });
+    required Option<Duration> preparationTime,
+  }) : preparationTime = preparationTime | Duration.zero;
 }
 
 class Ingredient {

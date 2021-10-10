@@ -10,6 +10,8 @@ Future<void> insertRecipe(String id, NewRecipe recipe) async {
         RecipeTable.columns.id: id,
         RecipeTable.columns.name: recipe.name,
         RecipeTable.columns.coverImage: recipe.optionalCoverImage.toNullable(),
+        RecipeTable.columns.preparationTime:
+            recipe.preparationTime.inMicroseconds,
       },
     );
 
@@ -47,6 +49,7 @@ Future<void> updateRecipe(String id, NewRecipe recipe) async {
       {
         RecipeTable.columns.name: recipe.name,
         RecipeTable.columns.coverImage: recipe.optionalCoverImage.toNullable(),
+        RecipeTable.columns.preparationTime: '${recipe.preparationTime}',
       },
       where: '${RecipeTable.columns.id} = ?',
       whereArgs: [id],

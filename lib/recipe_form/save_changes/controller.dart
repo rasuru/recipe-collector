@@ -16,6 +16,7 @@ class SaveChanges {
     required Option<Uint8List> optionalCoverImage,
     required List<Ingredient> ingredients,
     required List<String> cookingSteps,
+    required Option<Duration> preparationTime,
   }) {
     useCase.store(domain.NewRecipe(
       name: name,
@@ -27,6 +28,7 @@ class SaveChanges {
         );
       }).toList(),
       cookingSteps: cookingSteps,
+      preparationTime: preparationTime,
     ));
   }
 
@@ -36,6 +38,7 @@ class SaveChanges {
     required Option<Uint8List> optionalCoverImage,
     required List<Ingredient> ingredients,
     required List<String> cookingSteps,
+    required Option<Duration> preparationTime,
   }) {
     useCase.update(
       id,
@@ -49,6 +52,7 @@ class SaveChanges {
           );
         }).toList(),
         cookingSteps: cookingSteps,
+        preparationTime: preparationTime,
       ),
     );
   }

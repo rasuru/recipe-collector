@@ -6,21 +6,22 @@ import 'package:recipe_collector/database.dart';
 import '../domain.dart';
 
 Future<EditedRecipe> queryRecipe(String id) async {
+  final columns = RecipeTable.columns;
   final row = (await db.query(
     RecipeTable.name,
-    where: '${RecipeTable.columns.id} = ?',
+    where: '${columns.id} = ?',
     whereArgs: [id],
   ))[0];
-  final coverImage = row[RecipeTable.columns.coverImage] as Uint8List?;
-  final ingredients = await queryIngredients(id);
-  final cookingSteps = await queryCookingSteps(id);
 
   return EditedRecipe(
     maybeID: Some(id),
-    name: row[RecipeTable.columns.name] as String,
-    optionalCoverImage: optionOf(coverImage),
-    ingredients: ingredients,
-    cookingSteps: cookingSteps,
+    name: row[columns.name] as String,
+    optionalCoverImage: optionOf(row[columns.coverImage] as Uint8List?),
+    ingredients: await queryIngredients(id),
+    cookingSteps: await queryCookingSteps(id),
+    preparationTime: Duration(
+      microseconds: row[columns.preparationTime] as int,
+    ),
   );
 }
 

@@ -3,12 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
 import 'close_form.dart';
-import 'cooking_step_field/state.dart';
 import 'cover_image_picker/state.dart';
-import 'ingredient_field/state.dart';
-import 'name_field/state.dart';
+import 'name_field/providers.dart';
 import 'open_form/state.dart';
 import 'open_form/use_case.dart';
+import 'preparation_time_field/providers.dart';
 import 'state/cooking_step_field_list.dart';
 import 'state/ingredient_field_list.dart';
 
@@ -25,29 +24,16 @@ List<Provider> createRecipeFormProviders({
       ),
     ),
     Provider<EditedRecipe>.value(value: editedRecipe),
-    Provider<Name$>(
-      create: (_) => Name$(
-        textEditingController: TextEditingController(
-          text: editedRecipe.name,
-        ),
-      ),
-    ),
+    ...createNameFieldProviders(),
     Provider<IngredientFieldList$>(
-      create: (_) =>
-          IngredientFieldList$(editedRecipe.ingredients.map((ingredient) {
-        return IngredientField$(
-          initialName: ingredient.name,
-          initialAmount: ingredient.amount,
-        );
-      }).toList()),
+      create: (_) => IngredientFieldList$(editedRecipe.ingredients),
     ),
     Provider<CookingStepFieldList$>(
-      create: (_) => CookingStepFieldList$(editedRecipe.cookingSteps
-          .map((step) => CookingStepField$(initialText: step))
-          .toList()),
+      create: (_) => CookingStepFieldList$(editedRecipe.cookingSteps),
     ),
     Provider<CoverImage$>(
       create: (_) => CoverImage$(editedRecipe.optionalCoverImage),
     ),
+    ...createPreparationTimeFieldProviders(),
   ];
 }

@@ -15,6 +15,7 @@ import 'ingredient_field/ui.dart';
 import 'name_field/ui.dart';
 import 'open_form/state.dart';
 import 'open_form/use_case.dart';
+import 'preparation_time_field/ui.dart';
 import 'save_changes/providers.dart';
 import 'save_changes/ui/add_button.dart';
 import 'save_changes/ui/edit_button.dart';
@@ -53,6 +54,8 @@ class _RecipeFormState extends State<RecipeForm> {
       buildIngredientFields(),
       SizedBox(height: 20),
       buildCookingStepFields(),
+      SizedBox(height: 20),
+      PreparationTimeField(),
       SizedBox(height: 40),
       buildButtons(),
     ]);
