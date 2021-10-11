@@ -136,6 +136,17 @@ class RecipeListTile extends StatelessWidget {
     final theme = context.read<UITheme>();
 
     final chips = [
+      if (recipe.totalTime > Duration.zero)
+        Chip(
+          visualDensity: VisualDensity.compact,
+          labelPadding: paddingOf(right: 4),
+          backgroundColor: Colors.blue.shade100,
+          avatar: Icon(theme.totalTimeIcon, size: 18),
+          label: Text(prettyDuration(
+            recipe.totalTime,
+            abbreviated: true,
+          )),
+        ),
       if (recipe.preparationTime > Duration.zero)
         Chip(
           visualDensity: VisualDensity.compact,
@@ -155,17 +166,6 @@ class RecipeListTile extends StatelessWidget {
           avatar: Icon(theme.cookingTimeIcon, size: 18),
           label: Text(prettyDuration(
             recipe.cookingTime,
-            abbreviated: true,
-          )),
-        ),
-      if (recipe.totalTime > Duration.zero)
-        Chip(
-          visualDensity: VisualDensity.compact,
-          labelPadding: paddingOf(right: 4),
-          backgroundColor: Colors.blue.shade100,
-          avatar: Icon(theme.totalTimeIcon, size: 18),
-          label: Text(prettyDuration(
-            recipe.totalTime,
             abbreviated: true,
           )),
         ),
