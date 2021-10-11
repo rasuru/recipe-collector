@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_collector/ui/padding.dart';
+import 'package:flutter_remix/flutter_remix.dart';
 
 class UITheme {
   final borderWidth = 2.0;
   double get borderRadius => 5.0;
   final success = UISuccess();
+  final preparationTimeIcon = FlutterRemix.knife_line;
+  final cookingTimeIcon = FlutterRemix.fire_line;
+  final totalTimeIcon = FlutterRemix.timer_line;
   ThemeData get flutterTheme => ThemeData(
         brightness: Brightness.light,
         inputDecorationTheme: InputDecorationTheme(

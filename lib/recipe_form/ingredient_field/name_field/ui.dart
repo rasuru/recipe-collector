@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_remix/flutter_remix.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_collector/recipe_form/state/ingredient_field_list.dart';
 import 'package:recipe_collector/ui/theme.dart';
 
-import 'domain.dart';
 import '../state.dart';
+import 'domain.dart';
 
 class IngredientNameField extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class IngredientNameField extends StatelessWidget {
           onPressed: () => context.read<IngredientFieldList$>().removeField(
                 context.read<IngredientNumber>().index,
               ),
-          child: Icon(Icons.delete),
+          child: Icon(FlutterRemix.delete_bin_line),
         ),
       ),
     );

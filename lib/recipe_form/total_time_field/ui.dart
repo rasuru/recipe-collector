@@ -7,16 +7,16 @@ import 'package:recipe_collector/ui/theme.dart';
 
 import 'state.dart';
 
-class CookingTimeField extends StatelessWidget {
+class TotalTimeField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton.icon(
       onPressed: () => _showDurationPicker(context),
-      icon: Icon(context.read<UITheme>().cookingTimeIcon),
+      icon: Icon(context.read<UITheme>().totalTimeIcon),
       label: Row(children: [
-        Text('Cooking time'),
+        Text('Total time'),
         Spacer(),
-        BlocBuilder<CookingTime$, Option<Duration>>(
+        BlocBuilder<TotalTime$, Option<Duration>>(
           builder: (_, optionalDuration) {
             return optionalDuration.fold(
               () => Container(),
@@ -32,7 +32,7 @@ class CookingTimeField extends StatelessWidget {
   }
 
   Future<void> _showDurationPicker(BuildContext context) async {
-    final state = context.read<CookingTime$>();
+    final state = context.read<TotalTime$>();
 
     optionOf(
       await showDurationPicker(

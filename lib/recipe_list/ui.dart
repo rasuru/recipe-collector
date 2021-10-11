@@ -1,13 +1,15 @@
 import 'package:duration/duration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_remix/flutter_remix.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_collector/delete_recipe/use_case.dart';
-import 'package:recipe_collector/extensions/option.dart';
 import 'package:recipe_collector/progress.dart';
 import 'package:recipe_collector/recipe_details/state.dart';
 import 'package:recipe_collector/recipe_form/open_form/use_case.dart';
 import 'package:recipe_collector/ui/padding.dart';
+import 'package:recipe_collector/ui/theme.dart';
+import 'package:recipe_collector/ui/widgets/no_image_sign.dart';
 
 import 'controller.dart';
 import 'domain.dart';
@@ -122,7 +124,7 @@ class RecipeListTile extends StatelessWidget {
             buildCoverImage(),
             Padding(
               padding: paddingOf(all: 15),
-              child: buildChips(),
+              child: buildChips(context),
             ),
           ],
         ),
@@ -130,36 +132,51 @@ class RecipeListTile extends StatelessWidget {
     );
   }
 
-  Widget buildChips() {
+  Widget buildChips(BuildContext context) {
+    final theme = context.read<UITheme>();
+
+    final chips = [
+      if (recipe.preparationTime > Duration.zero)
+        Chip(
+          visualDensity: VisualDensity.compact,
+          labelPadding: paddingOf(right: 4),
+          backgroundColor: Colors.blue.shade50,
+          avatar: Icon(theme.preparationTimeIcon, size: 18),
+          label: Text(prettyDuration(
+            recipe.preparationTime,
+            abbreviated: true,
+          )),
+        ),
+      if (recipe.cookingTime > Duration.zero)
+        Chip(
+          visualDensity: VisualDensity.compact,
+          labelPadding: paddingOf(right: 4),
+          backgroundColor: Colors.blue.shade50,
+          avatar: Icon(theme.cookingTimeIcon, size: 18),
+          label: Text(prettyDuration(
+            recipe.cookingTime,
+            abbreviated: true,
+          )),
+        ),
+      if (recipe.totalTime > Duration.zero)
+        Chip(
+          visualDensity: VisualDensity.compact,
+          labelPadding: paddingOf(right: 4),
+          backgroundColor: Colors.blue.shade100,
+          avatar: Icon(theme.totalTimeIcon, size: 18),
+          label: Text(prettyDuration(
+            recipe.totalTime,
+            abbreviated: true,
+          )),
+        ),
+    ];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         buildTitle(),
         SizedBox(height: 5),
-        Wrap(children: [
-          if (recipe.preparationTime.isSome())
-            Chip(
-              visualDensity: VisualDensity.compact,
-              labelPadding: paddingOf(right: 4),
-              backgroundColor: Colors.blue.shade50,
-              avatar: Icon(Icons.hourglass_empty, size: 18),
-              label: Text(prettyDuration(
-                recipe.preparationTime.value,
-                abbreviated: true,
-              )),
-            ),
-          if (recipe.cookingTime.isSome())
-            Chip(
-              visualDensity: VisualDensity.compact,
-              labelPadding: paddingOf(right: 4),
-              backgroundColor: Colors.blue.shade50,
-              avatar: Icon(Icons.hourglass_bottom, size: 18),
-              label: Text(prettyDuration(
-                recipe.cookingTime.value,
-                abbreviated: true,
-              )),
-            ),
-        ]),
+        Wrap(spacing: 5, runSpacing: 5, children: chips),
       ],
     );
   }
@@ -168,15 +185,7 @@ class RecipeListTile extends StatelessWidget {
     return AspectRatio(
       aspectRatio: 16 / 9,
       child: recipe.optionalCoverImage.fold(
-        () => Container(
-          alignment: Alignment.center,
-          color: Colors.grey.shade200,
-          child: Icon(
-            Icons.local_dining,
-            size: 80,
-            color: Colors.grey.shade400,
-          ),
-        ),
+        buildNoImageSign,
         (image) => Image.memory(image, fit: BoxFit.cover),
       ),
     );

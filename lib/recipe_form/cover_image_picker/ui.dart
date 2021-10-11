@@ -3,10 +3,12 @@ import 'dart:typed_data';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_remix/flutter_remix.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_collector/ui/padding.dart';
 import 'package:recipe_collector/ui/theme.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:recipe_collector/ui/widgets/no_image_sign.dart';
 
 import 'state.dart';
 
@@ -17,6 +19,17 @@ class CoverImagePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.watch<UITheme>();
+    final preview = ClipRRect(
+      borderRadius: BorderRadius.circular(theme.borderRadius),
+      child: BlocBuilder<CoverImage$, Option<Uint8List>>(
+        builder: (context, maybeImage) {
+          return maybeImage.fold(
+            buildNoImageSign,
+            buildPreview,
+          );
+        },
+      ),
+    );
 
     return Padding(
       padding: paddingOf(bottom: bottomInset),
@@ -25,19 +38,7 @@ class CoverImagePicker extends StatelessWidget {
         child: Stack(
           clipBehavior: Clip.none,
           children: [
-            Positioned.fill(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(theme.borderRadius),
-                child: BlocBuilder<CoverImage$, Option<Uint8List>>(
-                  builder: (context, maybeImage) {
-                    return maybeImage.fold(
-                      buildNoImageSign,
-                      buildPreview,
-                    );
-                  },
-                ),
-              ),
-            ),
+            Positioned.fill(child: preview),
             Positioned(
               bottom: -bottomInset,
               left: 0,
@@ -77,7 +78,7 @@ class CoverImagePicker extends StatelessWidget {
       return OutlinedButton.icon(
         onPressed: context.watch<CoverImage$>().reset,
         style: OutlinedButton.styleFrom(backgroundColor: Colors.white),
-        icon: Icon(Icons.close),
+        icon: Icon(FlutterRemix.close_line),
         label: Text('Reset image'),
       );
     });
@@ -103,7 +104,7 @@ class CoverImagePicker extends StatelessWidget {
           ),
         );
       },
-      icon: Icon(Icons.photo),
+      icon: Icon(FlutterRemix.gallery_line),
       label: Text('Gallery'),
     );
   }
@@ -118,7 +119,7 @@ class CoverImagePicker extends StatelessWidget {
           ),
         );
       },
-      icon: Icon(Icons.camera),
+      icon: Icon(FlutterRemix.camera_3_line),
       label: Text('Camera'),
     );
   }
@@ -131,17 +132,5 @@ class CoverImagePicker extends StatelessWidget {
 
   Widget buildPreview(Uint8List image) {
     return Image.memory(image, fit: BoxFit.cover);
-  }
-
-  Widget buildNoImageSign() {
-    return Container(
-      alignment: Alignment.center,
-      color: Colors.grey.shade200,
-      child: Icon(
-        Icons.local_dining,
-        size: 80,
-        color: Colors.grey.shade400,
-      ),
-    );
   }
 }

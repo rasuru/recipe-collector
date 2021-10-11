@@ -7,23 +7,26 @@ String generateNewRecipeID() {
   return Uuid().v4();
 }
 
-class NewRecipe {
+class Recipe {
+  final String id;
   final String name;
   final Option<Uint8List> optionalCoverImage;
   final List<Ingredient> ingredients;
   final List<String> cookingSteps;
   final Duration preparationTime;
   final Duration cookingTime;
+  final Duration totalTime;
 
-  NewRecipe({
+  Recipe({
+    required this.id,
     required this.name,
     required this.optionalCoverImage,
     required this.ingredients,
     required this.cookingSteps,
-    required Option<Duration> preparationTime,
-    required Option<Duration> cookingTime,
-  })  : preparationTime = preparationTime | Duration.zero,
-        cookingTime = cookingTime | Duration.zero;
+    required this.preparationTime,
+    required this.cookingTime,
+    required this.totalTime,
+  });
 }
 
 class Ingredient {

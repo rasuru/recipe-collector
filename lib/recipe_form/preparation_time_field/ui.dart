@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:duration_picker/duration_picker.dart';
 import 'package:duration/duration.dart';
+import 'package:recipe_collector/ui/theme.dart';
 
 import 'state.dart';
 
@@ -11,7 +12,7 @@ class PreparationTimeField extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton.icon(
       onPressed: () => _showDurationPicker(context),
-      icon: Icon(Icons.hourglass_empty),
+      icon: Icon(context.read<UITheme>().preparationTimeIcon),
       label: Row(children: [
         Text('Preparation time'),
         Spacer(),

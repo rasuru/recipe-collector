@@ -11,6 +11,7 @@ import 'open_form/use_case.dart';
 import 'preparation_time_field/providers.dart';
 import 'state/cooking_step_field_list.dart';
 import 'state/ingredient_field_list.dart';
+import 'total_time_field/providers.dart';
 
 List<Provider> createRecipeFormProviders({
   required BuildContext context,
@@ -35,7 +36,14 @@ List<Provider> createRecipeFormProviders({
     Provider<CoverImage$>(
       create: (_) => CoverImage$(editedRecipe.optionalCoverImage),
     ),
-    ...createPreparationTimeFieldProviders(),
-    ...createCookingTimeFieldProviders(),
+    ...createPreparationTimeFieldProviders(
+      editedRecipe.optionalPreparationTime,
+    ),
+    ...createCookingTimeFieldProviders(
+      editedRecipe.optionalCookingTime,
+    ),
+    ...createTotalTimeFieldProviders(
+      editedRecipe.optionalTotalTime,
+    ),
   ];
 }

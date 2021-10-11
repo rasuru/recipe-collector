@@ -21,6 +21,7 @@ Future<EditedRecipe> queryRecipe(String id) async {
     cookingSteps: await queryCookingSteps(id),
     preparationTime: sqlToDuration(row[columns.preparationTime]),
     cookingTime: sqlToDuration(row[columns.cookingTime]),
+    totalTime: sqlToDuration(row[columns.totalTime]),
   );
 }
 

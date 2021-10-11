@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:dartz/dartz.dart';
 
 import '../state/ingredient_field_list.dart';
-import 'domain.dart' as domain;
 import 'use_case.dart';
 
 class SaveChanges {
@@ -11,53 +10,59 @@ class SaveChanges {
 
   SaveChanges(this.useCase);
 
-  void store({
-    required String name,
-    required Option<Uint8List> optionalCoverImage,
-    required List<Ingredient> ingredients,
-    required List<String> cookingSteps,
-    required Option<Duration> preparationTime,
-    required Option<Duration> cookingTime,
+  void call({
+    required Recipe recipe,
+    required String? optionalID,
   }) {
-    useCase.store(domain.NewRecipe(
+    if (optionalID == null) {
+      store(recipe);
+    } else {
+      update(optionalID, recipe);
+    }
+  }
+
+  void store(Recipe recipe) {
+    useCase.store(recipe.toEntity());
+  }
+
+  void update(String id, Recipe recipe) {
+    useCase.update(id, recipe.toEntity());
+  }
+}
+
+class Recipe {
+  final String name;
+  final Option<Uint8List> optionalCoverImage;
+  final List<Ingredient> ingredients;
+  final List<String> cookingSteps;
+  final Option<Duration> preparationTime;
+  final Option<Duration> cookingTime;
+  final Option<Duration> totalTime;
+
+  Recipe({
+    required this.name,
+    required this.optionalCoverImage,
+    required this.ingredients,
+    required this.cookingSteps,
+    required this.preparationTime,
+    required this.cookingTime,
+    required this.totalTime,
+  });
+
+  NewRecipe toEntity() {
+    return NewRecipe(
       name: name,
       optionalCoverImage: optionalCoverImage,
       ingredients: ingredients.map((ingredient) {
-        return domain.Ingredient(
+        return IngredientModel(
           name: ingredient.name,
           amount: ingredient.amount.isEmpty ? null : ingredient.amount,
         );
       }).toList(),
       cookingSteps: cookingSteps,
-      preparationTime: preparationTime,
-      cookingTime: cookingTime,
-    ));
-  }
-
-  void update({
-    required String id,
-    required String name,
-    required Option<Uint8List> optionalCoverImage,
-    required List<Ingredient> ingredients,
-    required List<String> cookingSteps,
-    required Option<Duration> preparationTime,
-    required Option<Duration> cookingTime,
-  }) {
-    useCase.update(
-      id,
-      domain.NewRecipe(
-        name: name,
-        optionalCoverImage: optionalCoverImage,
-        ingredients: ingredients.map((ingredient) {
-          return domain.Ingredient(
-            name: ingredient.name,
-            amount: ingredient.amount.isEmpty ? null : ingredient.amount,
-          );
-        }).toList(),
-        cookingSteps: cookingSteps,
-        preparationTime: preparationTime,
-        cookingTime: cookingTime,
-      ),
+      preparationTime: preparationTime | Duration.zero,
+      cookingTime: cookingTime | Duration.zero,
+      totalTime: totalTime | Duration.zero,
     );
   }
 }

@@ -9,17 +9,15 @@ import 'domain.dart';
 Stream<Future<List<Recipe>>> queryRecipes() {
   return db.createQuery(RecipeTable.name).asyncMapRows((row) async {
     final columns = RecipeTable.columns;
-    final id = row[columns.id] as String;
     final coverImage = row[columns.coverImage] as Uint8List?;
-    final preparationTime = sqlToDuration(row[columns.preparationTime]);
-    final cookingTime = sqlToDuration(row[columns.cookingTime]);
 
     return Recipe(
-      id: id,
+      id: row[columns.id] as String,
       name: row[columns.name] as String,
       optionalCoverImage: optionOf(coverImage),
-      preparationTime: preparationTime,
-      cookingTime: cookingTime,
+      preparationTime: sqlToDuration(row[columns.preparationTime]),
+      cookingTime: sqlToDuration(row[columns.cookingTime]),
+      totalTime: sqlToDuration(row[columns.totalTime]),
     );
   });
 }

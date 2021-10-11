@@ -29,6 +29,7 @@ dependencies:
   image_picker: ^0.8.4+2
   duration_picker: ^1.0.1
   duration: ^3.0.6
+  flutter_remix: ^0.0.3
 
 dev_dependencies:
   flutter_test:

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_remix/flutter_remix.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_collector/delete_recipe/state.dart';
 import 'package:recipe_collector/ui/padding.dart';
@@ -22,6 +23,7 @@ import 'save_changes/ui/add_button.dart';
 import 'save_changes/ui/edit_button.dart';
 import 'state/cooking_step_field_list.dart';
 import 'state/ingredient_field_list.dart';
+import 'total_time_field/ui.dart';
 
 class RecipeForm extends StatefulWidget {
   const RecipeForm({Key? key}) : super(key: key);
@@ -59,6 +61,8 @@ class _RecipeFormState extends State<RecipeForm> {
       PreparationTimeField(),
       SizedBox(height: 5),
       CookingTimeField(),
+      SizedBox(height: 5),
+      TotalTimeField(),
       SizedBox(height: 40),
       buildButtons(),
     ]);
@@ -122,7 +126,7 @@ class _RecipeFormState extends State<RecipeForm> {
               ),
             OutlinedButton.icon(
               onPressed: context.watch<IngredientFieldList$>().addField,
-              icon: Icon(Icons.add),
+              icon: Icon(FlutterRemix.add_line),
               label: Text('Add ingredient'),
             ),
           ],
@@ -155,7 +159,7 @@ class _RecipeFormState extends State<RecipeForm> {
               ),
             OutlinedButton.icon(
               onPressed: context.watch<CookingStepFieldList$>().addField,
-              icon: Icon(Icons.add),
+              icon: Icon(FlutterRemix.add_line),
               label: Text('Add step'),
             ),
           ],

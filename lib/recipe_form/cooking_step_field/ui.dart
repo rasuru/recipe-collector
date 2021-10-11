@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_remix/flutter_remix.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_collector/ui/theme.dart';
 
@@ -31,7 +32,7 @@ class CookingStepField extends StatelessWidget {
           onPressed: () => context.read<CookingStepFieldList$>().removeField(
                 context.read<CookingStepNumber>().index,
               ),
-          child: Icon(Icons.delete),
+          child: Icon(FlutterRemix.delete_bin_line),
         ),
       ),
     );

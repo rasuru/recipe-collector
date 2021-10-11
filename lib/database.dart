@@ -39,6 +39,7 @@ CREATE TABLE ${name} (
   ${columns.name} TEXT,
   ${columns.preparationTime} INT,
   ${columns.cookingTime} INT,
+  ${columns.totalTime} INT,
   ${columns.coverImage} BLOB
 );''';
 }
@@ -48,6 +49,7 @@ class _RecipeTableColumns {
   final name = 'name';
   final preparationTime = 'preparation_time';
   final cookingTime = 'cooking_time';
+  final totalTime = 'total_time';
   final coverImage = 'cover_image';
 }
 

@@ -1,93 +1,82 @@
 import 'package:recipe_collector/database.dart';
+import 'package:sqlbrite/sqlbrite.dart';
 
 import 'domain.dart';
 
-Future<void> insertRecipe(String id, NewRecipe recipe) async {
+Future<void> insertRecipe(Recipe recipe) async {
   await db.transaction((t) async {
-    await t.insert(
+    await t.insert(RecipeTable.name, recipe.toSQL(includeID: true));
+    await t.insertIngredientsOf(recipe);
+    await t.insertCookingStepsOf(recipe);
+  });
+  db.sendTableTrigger([RecipeTable.name, IngredientTable.name]);
+}
+
+Future<void> updateRecipe(Recipe recipe) async {
+  await db.transaction((t) async {
+    await t.update(
       RecipeTable.name,
-      {
-        RecipeTable.columns.id: id,
-        RecipeTable.columns.name: recipe.name,
-        RecipeTable.columns.coverImage: recipe.optionalCoverImage.toNullable(),
-        RecipeTable.columns.preparationTime: recipe.preparationTime.toSQL(),
-        RecipeTable.columns.cookingTime: recipe.cookingTime.toSQL(),
-      },
+      recipe.toSQL(),
+      where: '${RecipeTable.columns.id} = ?',
+      whereArgs: [recipe.id],
+    );
+    await t.insertIngredientsOf(recipe);
+    await t.insertCookingStepsOf(recipe);
+  });
+  db.sendTableTrigger([RecipeTable.name, IngredientTable.name]);
+}
+
+extension on Recipe {
+  Map<String, Object?> toSQL({bool includeID = false}) {
+    return {
+      if (includeID) RecipeTable.columns.id: id,
+      RecipeTable.columns.name: name,
+      RecipeTable.columns.coverImage: optionalCoverImage.toNullable(),
+      RecipeTable.columns.preparationTime: preparationTime.toSQL(),
+      RecipeTable.columns.cookingTime: cookingTime.toSQL(),
+      RecipeTable.columns.totalTime: totalTime.toSQL(),
+    };
+  }
+}
+
+extension on DatabaseExecutor {
+  Future<void> insertIngredientsOf(Recipe recipe) async {
+    await delete(
+      IngredientTable.name,
+      where: '${IngredientTable.columns.recipeID} = ?',
+      whereArgs: [recipe.id],
     );
 
     for (final ingredient in recipe.ingredients) {
-      await t.insert(
+      await insert(
         IngredientTable.name,
         {
-          IngredientTable.columns.recipeID: id,
+          IngredientTable.columns.recipeID: recipe.id,
           IngredientTable.columns.name: ingredient.name,
           IngredientTable.columns.amount: ingredient.amount,
         },
       );
     }
+  }
+
+  Future<void> insertCookingStepsOf(Recipe recipe) async {
+    await delete(
+      CookingStepTable.name,
+      where: '${CookingStepTable.columns.recipeID} = ?',
+      whereArgs: [recipe.id],
+    );
 
     for (int i = 0; i < recipe.cookingSteps.length; i++) {
       final step = recipe.cookingSteps[i];
 
-      await t.insert(
+      await insert(
         CookingStepTable.name,
         {
-          CookingStepTable.columns.recipeID: id,
+          CookingStepTable.columns.recipeID: recipe.id,
           CookingStepTable.columns.id: i,
           CookingStepTable.columns.text: step,
         },
       );
     }
-  });
-  db.sendTableTrigger([RecipeTable.name, IngredientTable.name]);
-}
-
-Future<void> updateRecipe(String id, NewRecipe recipe) async {
-  await db.transaction((t) async {
-    await t.update(
-      RecipeTable.name,
-      {
-        RecipeTable.columns.name: recipe.name,
-        RecipeTable.columns.coverImage: recipe.optionalCoverImage.toNullable(),
-        RecipeTable.columns.preparationTime: recipe.preparationTime.toSQL(),
-        RecipeTable.columns.cookingTime: recipe.cookingTime.toSQL(),
-      },
-      where: '${RecipeTable.columns.id} = ?',
-      whereArgs: [id],
-    );
-
-    await t.delete(
-      IngredientTable.name,
-      where: '${IngredientTable.columns.recipeID} = ?',
-      whereArgs: [id],
-    );
-
-    for (final ingredient in recipe.ingredients) {
-      await t.insert(
-        IngredientTable.name,
-        {
-          IngredientTable.columns.recipeID: id,
-          IngredientTable.columns.name: ingredient.name,
-          IngredientTable.columns.amount: ingredient.amount,
-        },
-      );
-    }
-
-    await t.delete(
-      CookingStepTable.name,
-      where: '${CookingStepTable.columns.recipeID} = ?',
-      whereArgs: [id],
-    );
-
-    for (final step in recipe.cookingSteps) {
-      await t.insert(
-        CookingStepTable.name,
-        {
-          CookingStepTable.columns.recipeID: id,
-          CookingStepTable.columns.text: step,
-        },
-      );
-    }
-  });
-  db.sendTableTrigger([RecipeTable.name, IngredientTable.name]);
+  }
 }

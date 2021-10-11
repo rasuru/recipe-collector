@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 
 class CookingTime$ extends Cubit<Option<Duration>> {
-  CookingTime$() : super(None());
+  CookingTime$(Option<Duration> initial) : super(initial);
 
   void present(Duration duration) {
     if (duration.inMinutes == 0) {

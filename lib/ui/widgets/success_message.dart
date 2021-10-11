@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_remix/flutter_remix.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_collector/ui/theme.dart';
 
@@ -13,7 +14,7 @@ class _SuccessMessageState extends State<SuccessMessage> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.check, color: colors.text),
+          Icon(FlutterRemix.check_line, color: colors.text),
           SizedBox(width: 10),
           Text(
             widget.message,

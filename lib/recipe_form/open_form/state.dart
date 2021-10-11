@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
+import 'package:recipe_collector/extensions/global.dart';
 import 'package:recipe_collector/progress.dart';
 
 import '../domain.dart' as domain;
@@ -27,6 +28,11 @@ class OpenRecipeFormProgress$ extends Cubit<Progress<EditedRecipe>> {
         }).toList(),
         cookingSteps: recipe.cookingSteps,
         optionalCoverImage: recipe.optionalCoverImage,
+        optionalPreparationTime:
+            recipe.preparationTime.when((it) => it > Duration.zero),
+        optionalCookingTime:
+            recipe.cookingTime.when((it) => it > Duration.zero),
+        optionalTotalTime: recipe.totalTime.when((it) => it > Duration.zero),
       );
     }));
   }
@@ -38,6 +44,9 @@ class EditedRecipe {
   final Option<Uint8List> optionalCoverImage;
   final List<EditedIngredient> ingredients;
   final List<String> cookingSteps;
+  final Option<Duration> optionalPreparationTime;
+  final Option<Duration> optionalCookingTime;
+  final Option<Duration> optionalTotalTime;
 
   EditedRecipe({
     required this.maybeID,
@@ -45,6 +54,9 @@ class EditedRecipe {
     required this.optionalCoverImage,
     required this.ingredients,
     required this.cookingSteps,
+    required this.optionalPreparationTime,
+    required this.optionalCookingTime,
+    required this.optionalTotalTime,
   });
 
   bool get isNewRecipe => maybeID.isNone();
