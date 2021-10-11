@@ -13,6 +13,7 @@ class NewRecipe {
   final List<Ingredient> ingredients;
   final List<String> cookingSteps;
   final Duration preparationTime;
+  final Duration cookingTime;
 
   NewRecipe({
     required this.name,
@@ -20,7 +21,9 @@ class NewRecipe {
     required this.ingredients,
     required this.cookingSteps,
     required Option<Duration> preparationTime,
-  }) : preparationTime = preparationTime | Duration.zero;
+    required Option<Duration> cookingTime,
+  })  : preparationTime = preparationTime | Duration.zero,
+        cookingTime = cookingTime | Duration.zero;
 }
 
 class Ingredient {

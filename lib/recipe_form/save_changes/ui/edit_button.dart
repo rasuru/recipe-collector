@@ -5,6 +5,7 @@ import 'package:recipe_collector/extensions/global.dart';
 import 'package:recipe_collector/progress.dart';
 
 import '../../close_form.dart';
+import '../../cooking_time_field/state.dart';
 import '../../cover_image_picker/state.dart';
 import '../../name_field/state.dart';
 import '../../preparation_time_field/state.dart';
@@ -56,6 +57,7 @@ class _SaveChangesButtonState extends State<SaveChangesButton> {
       ingredients: context.read<IngredientFieldList$>().ingredients,
       cookingSteps: context.read<CookingStepFieldList$>().steps,
       preparationTime: context.read<PreparationTime$>().state,
+      cookingTime: context.read<CookingTime$>().state,
     );
   }
 }

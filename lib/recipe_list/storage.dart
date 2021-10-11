@@ -11,15 +11,15 @@ Stream<Future<List<Recipe>>> queryRecipes() {
     final columns = RecipeTable.columns;
     final id = row[columns.id] as String;
     final coverImage = row[columns.coverImage] as Uint8List?;
-    final preparationTime = Duration(
-      microseconds: row[columns.preparationTime] as int,
-    );
+    final preparationTime = sqlToDuration(row[columns.preparationTime]);
+    final cookingTime = sqlToDuration(row[columns.cookingTime]);
 
     return Recipe(
       id: id,
       name: row[columns.name] as String,
       optionalCoverImage: optionOf(coverImage),
       preparationTime: preparationTime,
+      cookingTime: cookingTime,
     );
   });
 }

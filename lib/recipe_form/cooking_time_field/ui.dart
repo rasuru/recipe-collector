@@ -6,16 +6,16 @@ import 'package:duration/duration.dart';
 
 import 'state.dart';
 
-class PreparationTimeField extends StatelessWidget {
+class CookingTimeField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton.icon(
       onPressed: () => _showDurationPicker(context),
-      icon: Icon(Icons.hourglass_empty),
+      icon: Icon(Icons.hourglass_bottom),
       label: Row(children: [
-        Text('Preparation time'),
+        Text('Cooking time'),
         Spacer(),
-        BlocBuilder<PreparationTime$, Option<Duration>>(
+        BlocBuilder<CookingTime$, Option<Duration>>(
           builder: (_, optionalDuration) {
             return optionalDuration.fold(
               () => Container(),
@@ -31,7 +31,7 @@ class PreparationTimeField extends StatelessWidget {
   }
 
   Future<void> _showDurationPicker(BuildContext context) async {
-    final state = context.read<PreparationTime$>();
+    final state = context.read<CookingTime$>();
 
     optionOf(
       await showDurationPicker(

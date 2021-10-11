@@ -38,6 +38,7 @@ CREATE TABLE ${name} (
   ${columns.id} TEXT PRIMARY KEY,
   ${columns.name} TEXT,
   ${columns.preparationTime} INT,
+  ${columns.cookingTime} INT,
   ${columns.coverImage} BLOB
 );''';
 }
@@ -46,6 +47,7 @@ class _RecipeTableColumns {
   final id = 'id';
   final name = 'name';
   final preparationTime = 'preparation_time';
+  final cookingTime = 'cooking_time';
   final coverImage = 'cover_image';
 }
 
@@ -87,4 +89,12 @@ class _CookingStepTableColumns {
   final recipeID = 'recipe_id';
   final id = 'id';
   final text = 'cooking_step_text';
+}
+
+extension SQLDuration on Duration {
+  int toSQL() => inMicroseconds;
+}
+
+Duration sqlToDuration(Object? microseconds) {
+  return Duration(microseconds: microseconds as int);
 }

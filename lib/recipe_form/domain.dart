@@ -9,6 +9,7 @@ class EditedRecipe {
   final List<EditedIngredient> ingredients;
   final List<String> cookingSteps;
   final Duration preparationTime;
+  final Duration cookingTime;
 
   EditedRecipe({
     required this.maybeID,
@@ -17,6 +18,7 @@ class EditedRecipe {
     required this.ingredients,
     required this.cookingSteps,
     required this.preparationTime,
+    required this.cookingTime,
   });
 
   EditedRecipe.empty()
@@ -25,7 +27,8 @@ class EditedRecipe {
         optionalCoverImage = None(),
         ingredients = [EditedIngredient.empty()],
         cookingSteps = [''],
-        preparationTime = Duration.zero;
+        preparationTime = Duration.zero,
+        cookingTime = Duration.zero;
 
   bool get isNewRecipe => maybeID.isNone();
 }

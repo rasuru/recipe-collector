@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sliding_sheet/sliding_sheet.dart';
 
 import 'close_form.dart';
+import 'cooking_time_field/providers.dart';
 import 'cover_image_picker/state.dart';
 import 'name_field/providers.dart';
 import 'open_form/state.dart';
@@ -35,5 +36,6 @@ List<Provider> createRecipeFormProviders({
       create: (_) => CoverImage$(editedRecipe.optionalCoverImage),
     ),
     ...createPreparationTimeFieldProviders(),
+    ...createCookingTimeFieldProviders(),
   ];
 }

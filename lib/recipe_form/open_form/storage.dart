@@ -19,9 +19,8 @@ Future<EditedRecipe> queryRecipe(String id) async {
     optionalCoverImage: optionOf(row[columns.coverImage] as Uint8List?),
     ingredients: await queryIngredients(id),
     cookingSteps: await queryCookingSteps(id),
-    preparationTime: Duration(
-      microseconds: row[columns.preparationTime] as int,
-    ),
+    preparationTime: sqlToDuration(row[columns.preparationTime]),
+    cookingTime: sqlToDuration(row[columns.cookingTime]),
   );
 }
 

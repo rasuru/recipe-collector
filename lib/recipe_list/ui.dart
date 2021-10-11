@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_collector/delete_recipe/use_case.dart';
+import 'package:recipe_collector/extensions/option.dart';
 import 'package:recipe_collector/progress.dart';
 import 'package:recipe_collector/recipe_details/state.dart';
 import 'package:recipe_collector/recipe_form/open_form/use_case.dart';
@@ -136,16 +137,28 @@ class RecipeListTile extends StatelessWidget {
         buildTitle(),
         SizedBox(height: 5),
         Wrap(children: [
-          recipe.preparationTime.fold(
-            () => Container(),
-            (time) => Chip(
+          if (recipe.preparationTime.isSome())
+            Chip(
               visualDensity: VisualDensity.compact,
               labelPadding: paddingOf(right: 4),
               backgroundColor: Colors.blue.shade50,
-              avatar: Icon(Icons.timer, size: 18),
-              label: Text(prettyDuration(time, abbreviated: true)),
+              avatar: Icon(Icons.hourglass_empty, size: 18),
+              label: Text(prettyDuration(
+                recipe.preparationTime.value,
+                abbreviated: true,
+              )),
             ),
-          ),
+          if (recipe.cookingTime.isSome())
+            Chip(
+              visualDensity: VisualDensity.compact,
+              labelPadding: paddingOf(right: 4),
+              backgroundColor: Colors.blue.shade50,
+              avatar: Icon(Icons.hourglass_bottom, size: 18),
+              label: Text(prettyDuration(
+                recipe.cookingTime.value,
+                abbreviated: true,
+              )),
+            ),
         ]),
       ],
     );
