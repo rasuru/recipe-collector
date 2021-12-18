@@ -103,7 +103,7 @@ The build process differs for each platform. To learn more about building in pro
 - [x] Custom image covers
 - [x] Set preparation, cooking and total time
 - [ ] Export/import database
-- [ ] Import recipes from publicdomainrecipes.org and based.cooking
+- [ ] Import recipes from [publicdomainrecipes.org](https://publicdomainrecipes.org) and [based.cooking](https://based.cooking)
 - [ ] Language Support
     - [ ] Russian
 
